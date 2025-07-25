@@ -1,0 +1,81 @@
+
+
+
+
+
+
+
+
+
+
+
+/* Back Button for other canvases */
+
+
+/* Settings Canvas */
+
+
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Settings Categories */
+/* #difficultyText,
+#timeText,
+#bgMusicText {
+  display: none;
+  position: fixed;
+  text-transform: capitalize;
+  left: 2%;
+  width: 6vw;
+  z-index: 3;
+}
+
+#difficultyText {
+  top: 3%;
+}
+
+#timeText {
+  top: 16%;
+}
+
+#bgMusicText {
+  top: 29%;
+}
+
+#difficultyButton,
+#timeButton,
+#bgMusicButton {
+  display: none;
+  position: fixed;
+  text-transform: capitalize;
+  left: 16%;
+  width: 15vw;
+  z-index: 3;
+}
+
+#difficultyButton {
+  top: 3%;
+}
+
+#timeButton {
+  top: 16%;
+  text-transform: lowercase;
+}
+
+#bgMusicButton {
+  top: 29%;
+}
+
+Skins Canvas */
+
+

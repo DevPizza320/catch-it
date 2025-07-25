@@ -1,0 +1,321 @@
+.levels-container {
+    display: none;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    width: 75%;
+    height: fit-content;
+    gap: 3vh;
+    background-color: transparent;
+    overflow-y: scroll;
+    padding-top: 15vh;
+    z-index: 3;
+    will-change: transform;
+}
+
+.levels-container::-webkit-scrollbar {
+    display: none;
+}
+
+.level {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    width: 75%;
+    height: auto;
+    aspect-ratio: 2;
+    background-color: gray;
+    border-radius: 2vw;
+    font-size: clamp(1rem, calc(1.5vw + 1.5vh), 3rem);
+    text-shadow: 0 0 1vw black;
+}
+
+.level-name-text {
+    text-decoration: underline;
+}
+
+.level-name-bar {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 20%;
+    border-radius: 2vw 2vw 0 0;
+    box-shadow: 0 1vw 1vw inset black;
+}
+
+.image-bar {
+    width: 100%;
+    height: 60%;
+    position: relative;
+}
+
+.level-nav-bar {
+    width: 100%;
+    height: 20%;
+    border-radius: 0 0 1vw 1vw;
+    box-shadow: 0 0 1vw inset black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.level-nav-container {
+    height: 100%;
+    width: 95%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.level-select-button {
+    width: 40%;
+    height: 75%;
+    border-radius: calc(.5vw + .5vh);
+    font-size: clamp(.5rem, calc(1vw + 1vh), 2.5rem);
+    font-family: inherit;
+    transition: all 0.25s;
+    box-shadow: 0 0 1vw inset black;
+}
+
+.current-setup-button, .level-spacer-button {
+    height: 75%;
+    width: auto;
+    aspect-ratio: 1;
+}
+
+.level-spacer-button {
+    background-color: transparent;
+    border: none;
+}
+
+.current-setup-button {
+    background-color: rgba(0, 0, 0, .5);
+    border-radius: 50%;
+    transition: background-color 0.25s;
+    color: white;
+    font-size: inherit;
+    font-family: inherit;
+    border: none;
+}
+
+.current-setup-button:hover {
+    background-color: rgba(0,0,0,0.8);
+}
+
+.level-select-button:hover {
+    box-shadow: 0 .5vw .5vw black, .5vw .5vw 1vw inset black;
+}
+
+/* SPACE RACE */
+
+#space-race-level {
+    border: .5vw solid var(--space-border);
+    background-color: var(--space-border);
+    color: var(--space-color)
+}
+
+#space-race-level >.level-name-bar {
+    background: linear-gradient(to top left, var(--space-fill-left) 40%, var(--space-fill-right));
+}
+
+#space-race-level > #space-image-bar {
+    background: url("../Media/Background/GameLevels/SpaceRace.png") no-repeat center center;
+    background-size: cover;
+    border-radius: 10%;
+    border-top: .5vw solid var(--space-border);
+    border-bottom: .5vw solid var(--space-border);
+}
+
+#space-race-level >.level-nav-bar {
+    background: linear-gradient(to bottom right, var(--space-fill-bottom-left) 40%, var(--space-fill-bottom-right));
+}
+
+#space-race-level .level-select-button {
+    background: linear-gradient(to bottom right, var(--space-fill-right) 40%, var(--space-fill-bottom-left));
+    border: calc(.25vw + .25vh) solid var(--space-border);
+    color: var(--space-color);
+}
+
+#space-race-level .level-select-button:hover {
+    background: var(--space-border);
+    border: calc(.25vw + .25vh) solid var(--space-fill-right);
+    color: var(--space-fill-right);
+}
+
+/* FOREST */
+
+#forest-level {
+    border: .5vw solid var(--forest-border);
+    background-color: var(--forest-border);
+    color: var(--forest-color);
+}
+
+#forest-level >.level-name-bar {
+    background: linear-gradient(to top left, var(--forest-fill-left) 40%, var(--forest-fill-right));
+}
+
+#forest-level > #forest-image-bar {
+    background: url("../Media/Background/GameLevels/Forest.png") no-repeat center center;
+    background-size: cover;
+    border-radius: 10%;
+    border-top: .5vw solid var(--forest-border);
+    border-bottom: .5vw solid var(--forest-border);
+}
+
+#forest-level >.level-nav-bar {
+    background: linear-gradient(to bottom right, var(--forest-fill-bottom-left) 40%, var(--forest-fill-bottom-right));
+}
+
+#forest-level .level-select-button {
+    background: linear-gradient(to bottom right, var(--forest-fill-right) 40%, var(--forest-fill-bottom-left));
+    border: calc(.25vw + .25vh) solid var(--forest-border);
+    color: var(--forest-color);
+}
+
+#forest-level .level-select-button:hover {
+    background: var(--forest-border);
+    border: calc(.25vw + .25vh) solid var(--forest-fill-right);
+}
+
+/* HALLOWEEN */
+
+#halloween-level {
+    border: .5vw solid var(--halloween-border);
+    background-color: var(--halloween-border);
+    color: var(--halloween-color);
+}
+
+#halloween-level >.level-name-bar {
+    background: linear-gradient(to top left, var(--halloween-fill-left) 40%, var(--halloween-fill-right));
+}
+
+#halloween-level > #halloween-image-bar {
+    background: url("../Media/Background/GameLevels/Halloween.png") no-repeat center center;
+    background-size: cover;
+    border-radius: 10%;
+    border-top: .5vw solid var(--halloween-border);
+    border-bottom: .5vw solid var(--halloween-border);
+}
+
+#halloween-level >.level-nav-bar {
+    background: linear-gradient(to bottom right, var(--halloween-fill-bottom-left) 40%, var(--halloween-fill-bottom-right));
+}
+
+#halloween-level .level-select-button {
+    background: linear-gradient(to bottom right, var(--halloween-fill-right) 40%, var(--halloween-fill-bottom-left));
+    border: calc(.25vw + .25vh) solid var(--halloween-border);
+    color: var(--halloween-color);
+}
+
+#halloween-level .level-select-button:hover {
+    background: var(--halloween-border);
+    border: calc(.25vw + .25vh) solid var(--halloween-fill-right);
+    color: var(--halloween-fill-right);
+}
+
+/* CHRISTMAS */
+
+#christmas-level {
+    border: .5vw solid var(--christmas-border);
+    background-color: var(--christmas-border);
+    color: var(--christmas-color);
+}
+
+#christmas-level >.level-name-bar {
+    background: linear-gradient(to top left, var(--christmas-fill-left) 40%, var(--christmas-fill-right));
+}
+
+#christmas-level > #christmas-image-bar {
+    background: url("../Media/Background/GameLevels/Christmas.png") no-repeat center center;
+    background-size: cover;
+    border-radius: 10%;
+    border-top: .5vw solid var(--christmas-border);
+    border-bottom: .5vw solid var(--christmas-border);
+}
+
+#christmas-level >.level-nav-bar {
+    background: linear-gradient(to bottom right, var(--christmas-fill-bottom-left) 40%, var(--christmas-fill-bottom-right));
+}
+
+#christmas-level .level-select-button {
+    background: linear-gradient(to bottom right, var(--christmas-fill-right) 40%, var(--christmas-fill-bottom-left));
+    border: calc(.25vw + .25vh) solid var(--christmas-border);
+    color: var(--christmas-color);
+}
+
+#christmas-level .level-select-button:hover {
+    background: var(--christmas-border);
+    border: calc(.25vw + .25vh) solid var(--christmas-fill-right);
+}
+
+/* THE FIRST NIGHT */
+
+#the-first-night-level {
+    border: .5vw solid var(--the-first-night-border);
+    background-color: var(--the-first-night-border);
+    color: var(--the-first-night-color);
+}
+
+#the-first-night-level >.level-name-bar {
+    background: linear-gradient(to top left, var(--the-first-night-fill-left) 40%, var(--the-first-night-fill-right));
+}
+
+#the-first-night-level > #the-first-night-image-bar {
+    background: url("../Media/Background/GameLevels/TheFirstNight.png") no-repeat center center;
+    background-size: cover;
+    border-radius: 10%;
+    border-top: .5vw solid var(--the-first-night-border);
+    border-bottom: .5vw solid var(--the-first-night-border);
+}
+
+#the-first-night-level >.level-nav-bar {
+    background: linear-gradient(to bottom right, var(--the-first-night-fill-bottom-left) 40%, var(--the-first-night-fill-bottom-right));
+}
+
+#the-first-night-level .level-select-button {
+    background: linear-gradient(to bottom right, var(--the-first-night-fill-right) 40%, var(--the-first-night-fill-left));
+    border: calc(.25vw + .25vh) solid var(--the-first-night-border);
+    color: var(--the-first-night-color);
+}
+
+#the-first-night-level .level-select-button:hover {
+    background: var(--the-first-night-border);
+    border: calc(.25vw + .25vh) solid var(--the-first-night-fill-right);
+}
+
+/* DEEP DARK */
+
+#the-deep-dark-level {
+    border: .5vw solid var(--the-deep-dark-border);
+    background-color: var(--the-deep-dark-border);
+    color: var(--the-deep-dark-color);
+}
+
+#the-deep-dark-level >.level-name-bar {
+    background: linear-gradient(to top left, var(--the-deep-dark-fill-left) 40%, var(--the-deep-dark-fill-right));
+}
+
+#the-deep-dark-level > #the-deep-dark-image-bar {
+    background: url("../Media/Background/GameLevels/TheDeepDark.png") no-repeat center center;
+    background-size: cover;
+    border-radius: 10%;
+    border-top: .5vw solid var(--the-deep-dark-border);
+    border-bottom: .5vw solid var(--the-deep-dark-border);
+}
+
+#the-deep-dark-level >.level-nav-bar {
+    background: linear-gradient(to bottom right, var(--the-deep-dark-fill-bottom-left) 40%, var(--the-deep-dark-fill-bottom-right));
+}
+
+#the-deep-dark-level .level-select-button {
+    background: linear-gradient(to bottom right, var(--the-deep-dark-fill-right) 40%, var(--the-deep-dark-fill-bottom-left));
+    border: calc(.25vw + .25vh) solid var(--the-deep-dark-border);
+    color: var(--the-deep-dark-color);
+}
+
+#the-deep-dark-level .level-select-button:hover {
+    background: var(--the-deep-dark-border);
+    border: calc(.25vw + .25vh) solid var(--the-deep-dark-fill-right);
+    color: var(--the-deep-dark-fill-right);
+}

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halloween</title>
+    <link rel="stylesheet" href="../../../css/color-db.css" type="text/css">
+    <link rel="stylesheet" href="/js/game/game-styles.css" type="text/css">
+    <link rel="shortcut icon" href="../../../Media/Background/CatchIt.png" type="image/png">
+    <style>
+        body {
+            color: var(--halloween-color);
+        }
+
+        .statDiv {
+            border: var(--brdr-size) solid var(--halloween-border);
+            background: linear-gradient(to bottom right, var(--halloween-fill-right) 40%, var(--halloween-fill-left));
+            text-shadow: 0 0 1vw black;
+        }
+
+        .name {
+            color: var(--halloween-border);
+            box-shadow: 0 .25vw .25vw var(--halloween-border);
+        }
+
+        #halloweenCanvas {
+            background: url("../../../Media/Background/GameLevels/Halloween.png") no-repeat center center;
+            background-size: cover;
+        }
+
+        .mobile-controls {
+            border-top: var(--brdr-size) solid var(--halloween-border);
+            background: linear-gradient(var(--halloween-fill-bottom-left) 40%, var(--halloween-fill-bottom-right));
+        }
+
+        .pause-span {
+            color: var(--halloween-color);
+            text-shadow: .5vw .5vw 0 var(--halloween-border), .5vw .5vw 0 var(--halloween-border), .5vw .5vw 0 var(--halloween-border);
+        }
+
+        .pause-btn {
+            background: linear-gradient(to bottom right, var(--halloween-fill-left) 40%, var(--halloween-fill-bottom-right));
+            border: .75vw solid var(--halloween-border);
+            box-shadow: .5vw .5vw 0 var(--halloween-color);
+        }
+    </style>
+</head>
+
+<body class="game-body">
+    <canvas class="game-canvas" id="halloweenCanvas"></canvas>
+
+    <div id="statBar">
+        <div class="statContainer">
+            <div class="statDiv" id="p1Lives">
+                <span class="game-text"></span>
+            </div>
+            <div class="statDiv" id="p1Score">
+                <span class="game-text"></span>
+            </div>
+            <span class="game-text name" id="p1Name"></span>
+            <div class="statDiv" id="p2Lives">
+                <span class="game-text"></span>
+            </div>
+            <div class="statDiv" id="p2Score">
+                <span class="game-text"></span>
+            </div>
+            <span class="game-text name" id="p2Name"></span>
+        </div>
+        <div class="utilities">
+            <div class="statDiv" id="gameTime">
+                <span class="game-text">00:00 🕑</span>
+            </div>
+            <div class="statDiv pause-button">
+                <span class="game-text">Pause ⏸️</span>
+            </div>
+        </div>
+    </div>
+    <div class="pause-screen">
+        <span class="pause-span">Game Paused</span>
+        <button class="pause-btn">Resume</button>
+    </div>
+    <script type="module">
+        import { gameAssets } from "../../../js/data/assets.js"
+        import { hide, loadFromLocalStorage, saveToLocalStorage, getUserDeviceType, createMobileControls, appendMobileControls } from "../../../js/data/helper-functions.js"
+        import * as eff from "../../../js/game/functions/effects.js"
+        import * as g from "../../../js/game/functions/game-functions.js"
+
+        const allPlayerData = loadFromLocalStorage("allPlayerData");
+
+        const DEVICE_TYPE = getUserDeviceType();
+        const MULTIPLIER = DEVICE_TYPE === 'keyboard' ? 1 : .93;
+        const DIFFICULTY_MULTIPLIER = allPlayerData.generalStats.levelDifficulty.multiplier || 1;
+        const EXTENSION = "../../../";
+
+        const firstPlayer = allPlayerData[allPlayerData.playerSelection.twoSelectedPlayers[0]];
+        const secondPlayer = allPlayerData[allPlayerData.playerSelection.twoSelectedPlayers[1]];
+
+        const statBar = document.getElementById("statBar");
+        document.getElementById("p1Name").textContent = firstPlayer.username || "Player 1";
+        document.getElementById("p2Name").textContent = secondPlayer.username || "Player 2";
+
+        const canvas = document.getElementById("halloweenCanvas");
+        const ctx = canvas.getContext("2d");
+
+        let gamePaused = false;
+
+        window.addEventListener('resize', g.resizeCanvas(canvas));
+        g.resizeCanvas(canvas);
+
+        const gameState = g.getGameVariables(false);
+
+        const assets = {
+            player1: Object.assign(new Image(), { src: EXTENSION + firstPlayer.skins.selectedSkin.src }),
+            player2: Object.assign(new Image(), { src: EXTENSION + secondPlayer.skins.selectedSkin.src }),
+            bat: Object.assign(new Image(), { src: EXTENSION + gameAssets.images.levels.Halloween.objects.bat }),
+            cobweb: Object.assign(new Image(), { src: EXTENSION + gameAssets.images.levels.Halloween.objects.cobweb }),
+            potion: Object.assign(new Image(), { src: EXTENSION + gameAssets.images.levels.Halloween.objects.potion }),
+            pumpkin: Object.assign(new Image(), { src: EXTENSION + gameAssets.images.levels.Halloween.objects.pumpkin }),
+            players: [],
+            particles: [],
+            popups: [],
+            balls: [],
+            bats: [],
+            cobwebs: [],
+            potions: [],
+            pumpkins: [],
+            batAudio: Object.assign(new Audio(EXTENSION + gameAssets.audios.backgroundMusic.levels.Halloween.objects.bat), { volume: allPlayerData.generalStats.sfxVolume || 1 }),
+            cobwebAudio: Object.assign(new Audio(EXTENSION + gameAssets.audios.backgroundMusic.levels.Halloween.objects.cobweb), { volume: allPlayerData.generalStats.sfxVolume || 1 }),
+            pumpkinAudio: Object.assign(new Audio(EXTENSION + gameAssets.audios.backgroundMusic.levels.Halloween.objects.pumpkin), { volume: allPlayerData.generalStats.sfxVolume || 1 }),
+            glassAudio: Object.assign(new Audio(EXTENSION + gameAssets.audios.backgroundMusic.levels.Halloween.objects.glass), { volume: allPlayerData.generalStats.sfxVolume || 1 }),
+            damageAudio: Object.assign(new Audio(EXTENSION + gameAssets.audios.backgroundMusic.levels.Halloween.objects.damage), { volume: allPlayerData.generalStats.sfxVolume || 1 }),
+            pointsAudio: Object.assign(new Audio(EXTENSION + gameAssets.audios.backgroundMusic.levels.Halloween.objects.points), { volume: allPlayerData.generalStats.sfxVolume || 1 }),
+            speedAudio: Object.assign(new Audio(EXTENSION + gameAssets.audios.backgroundMusic.levels.Halloween.objects.speed), { volume: allPlayerData.generalStats.sfxVolume || 1 }),
+            music: Object.assign(new Audio(EXTENSION + gameAssets.audios.backgroundMusic.levels.Halloween.b), { volume: allPlayerData.generalStats.musicVolume || 1 }),
+            gameOver: Object.assign(new Audio(EXTENSION + gameAssets.audios.sfx.generic.gameOver), { volume: allPlayerData.generalStats.sfxVolume || 1 }),
+        }
+
+        assets.players = g.initializeGameObjects(canvas, assets.particles);
+
+        if (DEVICE_TYPE === 'keyboard') {
+            g.addKeyListeners(assets.players, gameState, assets.music, statBar, startGame);
+        } else {
+            // Check if controls should be flipped for each player
+            const firstFlipped = firstPlayer.settings.touch.direction === "Flipped";
+            const secondFlipped = secondPlayer.settings.touch.direction === "Flipped";
+
+            // Create mobile controls for both players
+            const firstPlayerControls = createMobileControls(firstPlayer, 1, "left", firstFlipped);
+            const secondPlayerControls = createMobileControls(secondPlayer, 2, "right", secondFlipped);
+
+            // Append controls to the UI
+            appendMobileControls(firstPlayerControls, secondPlayerControls, statBar);
+
+            // Determine control types for each player
+            const firstUsesArrows = firstPlayer.settings.touch.mover === 'ArrowKeys';
+            const secondUsesArrows = secondPlayer.settings.touch.mover === 'ArrowKeys';
+            const firstUsesSlider = firstPlayer.settings.touch.mover === 'Slider';
+            const secondUsesSlider = secondPlayer.settings.touch.mover === 'Slider';
+            const firstHasStarPower = assets.players[0].starPower !== null;
+            const secondHasStarPower = assets.players[1].starPower !== null;
+            const firstCanJump = assets.players[0].canJump;
+            const secondCanJump = assets.players[1].canJump;
+
+            const mobileControls = document.querySelector(".mobile-controls");
+            // Add mobile listeners accordingly
+            g.addMobileListeners(
+                assets.players,
+                firstUsesArrows ? document.getElementById("moverLeft1") : null,
+                firstUsesArrows ? document.getElementById("moverRight1") : null,
+                secondUsesArrows ? document.getElementById("moverLeft2") : null,
+                secondUsesArrows ? document.getElementById("moverRight2") : null,
+                firstUsesSlider ? document.getElementById("moverSlider1") : null,
+                secondUsesSlider ? document.getElementById("moverSlider2") : null,
+                firstHasStarPower ? document.getElementById("starPowerWrapper1") : null,
+                secondHasStarPower ? document.getElementById("starPowerWrapper2") : null,
+                firstCanJump ? document.getElementById("moverJumper1") : null,
+                secondCanJump ? document.getElementById("moverJumper2") : null,
+                gameState, assets.music, statBar, mobileControls, startGame
+            );
+        }
+
+        document.querySelector(".pause-button").addEventListener("click", () => {
+            gamePaused = true;
+            document.querySelector(".pause-screen").style.display = "flex";
+            document.querySelector(".pause-btn").addEventListener("click", () => {
+                document.querySelector(".pause-screen").style.display = "none";
+                gamePaused = false;
+            })
+        });
+
+        hide(statBar);
+
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (gameState.current === "menu") {
+                g.drawMenu(
+                    ctx,
+                    canvas,
+                    getComputedStyle(document.documentElement).getPropertyValue('--halloween-fill-bottom-right').trim(),
+                    getComputedStyle(document.documentElement).getPropertyValue('--halloween-fill-bottom-left').trim(),
+                    DEVICE_TYPE === 'touch'
+                );
+            } else if (gameState.current === "countdown") {
+                g.drawCountdown(
+                    ctx,
+                    canvas,
+                    getComputedStyle(document.documentElement).getPropertyValue('--halloween-fill-bottom-right').trim(),
+                    getComputedStyle(document.documentElement).getPropertyValue('--halloween-fill-bottom-left').trim(),
+                    gameState
+                );
+            } else if (gameState.current === "playing" && !gamePaused) {
+                g.moveParticles(canvas, assets.particles, MULTIPLIER);
+                g.moveEntity(canvas, assets.players, gamePaused);
+                g.moveObjects(canvas, assets.balls, MULTIPLIER);
+                g.moveObjects(canvas, assets.bats, MULTIPLIER);
+                g.moveObjects(canvas, assets.cobwebs, MULTIPLIER);
+                g.moveObjects(canvas, assets.potions, MULTIPLIER);
+                g.moveObjects(canvas, assets.pumpkins, MULTIPLIER);
+
+                g.drawParticles(ctx, "#ebc354", assets.particles);
+                g.drawEntities(ctx, assets.players);
+                g.drawObjects(assets.balls, ctx, "ball");
+                g.drawObjects(assets.bats, ctx, "object");
+                g.drawObjects(assets.cobwebs, ctx, "object");
+                g.drawObjects(assets.potions, ctx, "object");
+                g.drawObjects(assets.pumpkins, ctx, "object");
+
+                g.checkCollisions(
+                    assets.balls, assets.players, null,
+                    (i, obj) => [
+                        { fn: (player) => { player.score += 100; player.caughtBalls++ }, args: [assets.players[i]] },
+                        { fn: (p, m) => { g.doBallRewards(p, m) }, args: [assets.players, DIFFICULTY_MULTIPLIER] }
+                    ]
+                );
+
+                g.checkCollisions(
+                    assets.bats, assets.players, null,
+                    (i, obj) => [
+                        { fn: (player) => { player.score -= 1000; player.lives -= 1; player.livesLost++; }, args: [assets.players[i]] },
+                        { fn: (p, t, x, y, c, s) => { g.createPopup(p, t, x, y, c, s) }, args: [assets.popups, `${Math.floor(-1 * DIFFICULTY_MULTIPLIER)}L`, obj.x, obj.y, "#d93030", "#590505"] },
+                        { fn: g.playAudio, args: [assets.batAudio] }
+                    ]
+                );
+
+                g.checkCollisions(
+                    assets.cobwebs, assets.players, null,
+                    (i, obj) => [
+                        { fn: (player) => { player.score -= 2500; player.lives -= 2; player.livesLost += 3; 
+                            eff.slowness(0.25, 2500 * DIFFICULTY_MULTIPLIER, false, 1, player);
+                        }, args: [assets.players[i]] },
+                        { fn: (p, t, x, y, c, s) => { g.createPopup(p, t, x, y, c, s) }, args: [assets.popups, "-2L", obj.x, obj.y, "#d93030", "#590505"] },
+                        { fn: g.playAudio, args: [assets.cobwebAudio] }
+                    ]
+                );
+
+                g.checkCollisions(
+                    assets.potions, assets.players, null,
+                    (i, obj) => [
+                        { fn: (player, otherPlayer) => { 
+                            const chance = Math.random();
+
+                            if (chance < 0.2) {
+                                player.score += 5000;
+                                g.playAudio(assets.pointsAudio);
+                            } else if (chance < 0.4) {
+                                player.lives -= 3;
+                                player.livesLost += 3;
+                                g.playAudio(assets.damageAudio);
+                            } else if (chance < 0.6) {
+                                player.lives += 3;
+                                player.livesGained += 3;
+                                g.playAudio(assets.pointsAudio);
+                            } else if (chance < 0.8) {
+                                eff.slowness(0.25, 2500 * DIFFICULTY_MULTIPLIER, false, 1, player);
+                                g.playAudio(assets.cobwebAudio);
+                            } else if (chance < 0.9) {
+                                player.score += otherPlayer.score * 0.05;
+                                otherPlayer.score -= otherPlayer.score * 0.05;
+                                g.playAudio(assets.glassAudio);
+                            }
+                         }, args: [assets.players[i], assets.players[(i + 1) % assets.players.length]] },
+                        { fn: (p, t, x, y, c, s) => { g.createPopup(p, t, x, y, c, s) }, args: [assets.popups, "???", obj.x, obj.y, "#c930bf", "#52034c"] },
+                    ]
+                );
+
+                g.checkCollisions(
+                    assets.pumpkins, assets.players, null,
+                    (i, obj) => [
+                        { fn: (player) => { player.score += 1000; player.lives += 3; player.livesGained += 3; }, args: [assets.players[i]] },
+                        { fn: (p, t, x, y, c, s) => { g.createPopup(p, t, x, y, c, s) }, args: [assets.popups, "3L", obj.x, obj.y, "#32ad49", "#086118"] },
+                        { fn: g.playAudio, args: [assets.pumpkinAudio] }
+                    ]
+                );
+
+                g.doBallRewards(assets.players, MULTIPLIER);
+
+                g.renderPopups(canvas, ctx, assets.popups);
+                g.updateUI(assets.players, gameState);
+
+                g.handleGameOver(assets.players, gameState);
+            } else if (gameState.current === "gameover") {
+                firstPlayer.profile.score += assets.players[0].score;
+                firstPlayer.profile.caughtBalls += assets.players[0].caughtBalls;
+                firstPlayer.profile.livesGained += assets.players[0].livesGained;
+                firstPlayer.profile.livesLost += assets.players[0].livesLost;
+                secondPlayer.profile.score += assets.players[1].score;
+                secondPlayer.profile.caughtBalls += assets.players[1].caughtBalls;
+                secondPlayer.profile.livesGained += assets.players[1].livesGained;
+                secondPlayer.profile.livesLost += assets.players[1].livesLost;
+                saveToLocalStorage("allPlayerData", allPlayerData);
+                assets.music.pause();
+                g.playAudio(assets.gameOver);
+            }
+
+            if (gamePaused) {
+                g.drawParticles(ctx, "#ebc354", assets.particles);
+                g.drawEntities(ctx, assets.players);
+                g.drawObjects(assets.balls, ctx, "ball");
+                g.drawObjects(assets.foxes, ctx, "object");
+                g.drawObjects(assets.saplings, ctx, "object");
+                g.drawObjects(assets.bears, ctx, "object");
+            }
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        function startGame() {
+            setInterval(() => {
+                g.spawnObject(
+                    assets.balls,
+                    Math.random() * canvas.width,
+                    0,
+                    canvas.width * 0.005,
+                    canvas.width * 0.005,
+                    Math.random() * 1 + 0.2,
+                    Math.random() * 10 < 5 ? "green" : "#5A3212",
+                    null,
+                    gamePaused
+                );
+            }, 200);
+
+            setInterval(() => {
+                g.spawnObject(
+                    assets.bats,
+                    Math.random() * canvas.width,
+                    0,
+                    canvas.width * 0.05,
+                    canvas.height * 0.07,
+                    (Math.random() * 1 + 0.5) * DIFFICULTY_MULTIPLIER,
+                    null,
+                    assets.bat,
+                    gamePaused
+                );
+            }, 2000 / DIFFICULTY_MULTIPLIER);
+
+            setInterval(() => {
+                g.spawnObject(
+                    assets.cobwebs,
+                    Math.random() * canvas.width,
+                    0,
+                    canvas.width * 0.05,
+                    canvas.height * 0.07,
+                    (Math.random() * 2 + 0.5) * DIFFICULTY_MULTIPLIER,
+                    null,
+                    assets.cobweb,
+                    gamePaused
+                );
+            }, 2500 / DIFFICULTY_MULTIPLIER);
+
+            setInterval(() => {
+                g.spawnObject(
+                    assets.potions,
+                    Math.random() * canvas.width,
+                    0,
+                    canvas.width * 0.05,
+                    canvas.height * 0.07,
+                    (Math.random() * 1 + 0.5) * DIFFICULTY_MULTIPLIER,
+                    null,
+                    assets.potion,
+                    gamePaused
+                );
+            }, 2500 * DIFFICULTY_MULTIPLIER);
+
+            setInterval(() => {
+                g.spawnObject(
+                    assets.pumpkins,
+                    Math.random() * canvas.width,
+                    0,
+                    canvas.width * 0.04,
+                    canvas.height * 0.05,
+                    (Math.random() * 1 + 0.5) * DIFFICULTY_MULTIPLIER,
+                    null,
+                    assets.pumpkin,
+                    gamePaused
+                );
+            }, 2500 * DIFFICULTY_MULTIPLIER);
+
+            g.startTimer(gameState, "playing");
+        }
+
+        gameLoop();
+    </script>
+</body>
+
+</html>

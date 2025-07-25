@@ -1,0 +1,133 @@
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background-size: cover;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    font-family: "Comic Sans MS";
+
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-drag: none;
+    -moz-user-drag: none;
+    -ms-user-drag: none;
+}
+
+* {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-drag: none;
+    -moz-user-drag: none;
+    -ms-user-drag: none;
+    outline: none;
+    box-sizing: border-box;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+}
+
+a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
+
+.rotate-screen {
+    display: none;
+    place-items: center;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: transparent;
+    backdrop-filter: blur(15px);
+    z-index: 10000;
+}
+
+.rotate-screen p {
+    font-size: 3em;
+    color: white;
+    text-shadow: 0 1vw 1vw black;
+    text-align: center;
+}
+
+@media (orientation: portrait) {
+    .rotate-screen {
+        display: grid;
+        place-items: center;
+        position: absolute;
+        width: 100vw;
+        height: 100vh;
+        background-color: transparent;
+        backdrop-filter: blur(15px);
+        z-index: 10000;
+    }
+
+    .rotate-screen p {
+        font-size: 3em;
+        color: white;
+        text-shadow: 0 1vw 1vw black;
+        text-align: center;
+    }
+}
+
+#backgroundVideo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    filter: contrast(120%);
+    z-index: -2;
+    pointer-events: none;
+}
+
+.window-canvas:not(.wooden) {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+}
+
+#jungleCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.window-canvas {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100vw;
+    height: 101vh;
+    z-index: 2;
+    background-color: red;
+    overflow: hidden;
+}
+
+.wooden {
+    background: linear-gradient(-60deg, #6f4215, #dda862, #815317);
+}
+
+.empty-canvas {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: grid;
+    place-items: center;
+    z-index: 10000;
+}

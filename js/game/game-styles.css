@@ -1,0 +1,617 @@
+* {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-drag: none;
+    -moz-user-drag: none;
+    -ms-user-drag: none;
+    outline: none;
+    box-sizing: border-box;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+
+    font-family: "Comic Sans MS";
+}
+
+.game-body {
+    min-height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    --brdr-size: calc(.25vw + .25vh);
+}
+
+.game-canvas {
+    display: grid;
+    place-items: center;
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-size: cover;
+    z-index: -1;
+}
+
+.game-text {
+    font-size: calc(.75vw + .75vh);
+    white-space: pre;
+}
+
+#statBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: top;
+    width: 100vw;
+    height: auto;
+    aspect-ratio: 12;
+    margin-top: calc(.75vw + .75vh);
+}
+
+.statContainer {
+    display: grid;
+    place-items: center;
+    grid-template-columns: repeat(3, auto);
+    grid-template-rows: repeat(2, auto);
+    gap: .5vw;
+}
+
+.statDiv {
+    width: 10vw;
+    height: auto;
+    aspect-ratio: 2.5;
+    border-radius: 0.8vw;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 0.6vw;
+    overflow: hidden;
+    font-size: calc(1vw + 1vh);
+    font-family: "Comic Sans MS", sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    white-space: pre;
+    gap: 0.5vw;
+}
+
+.name {
+    width: 9vw;
+    text-align: left;
+    font-size: calc(1vw + 1vh);
+    justify-content: flex-start;
+    text-decoration: underline;
+    border-radius: 2vh 2vh 0 0;
+}
+
+.utilities {
+    display: flex;
+    flex-direction: row;
+    gap: .5vw;
+    height: fit-content;
+}
+
+.pause-button {
+    box-shadow: -.25vw -.25vw 0 inset black;
+    transition: all 0.1s;
+}
+
+.pause-button:hover {
+    box-shadow: .25vw -.25vw 0 inset black;
+    transform: scale(.90);
+}
+
+.mobile-controls {
+    width: 100%;
+    height: 6.5%;
+    aspect-ratio: 15;
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.player {
+    height: 100%;
+    width: 45%;
+    gap: 1vw;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.star-wrapper {
+    position: relative;
+    height: 85%;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.player img {
+    height: 100%;
+    width: auto;
+    aspect-ratio: 1;
+    object-fit: contain;
+    filter: drop-shadow(.5vw .5vw 0 black);
+    z-index: 1;
+}
+
+.cooldown-text {
+    position: absolute;
+    z-index: 2;
+    font-size: calc(1.2vh + 1.2vw);
+    color: white;
+    font-weight: bold;
+    text-shadow: 0 0 1vw black, 0 0 2vw black;
+    pointer-events: none;
+}
+
+
+.player img.jump-button:active,
+.star-wrapper img.star-button:active {
+    transform: scale(0.9);
+}
+
+.player input {
+    max-width: 25vw;
+    height: 100%;
+}
+
+.movementSlider {
+    width: 75%;
+    background: transparent;
+}
+
+input[type=range] {
+    -webkit-appearance: none;
+    /* Hides the slider so that custom slider can be made */
+    appearance: none;
+    width: 100%;
+    /* Specific width is required for Firefox. */
+    background: transparent;
+    /* Otherwise white in Chrome */
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 15%;
+    cursor: pointer;
+    box-shadow: .25vw .25vw .25vw #000000, 0 0 .25vw #0d0d0d;
+    background: #3071a9;
+    border-radius: .25vw;
+    border: .25vh solid #010101;
+}
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #367ebd;
+}
+
+input[type=range]::-moz-range-track {
+    width: 100%;
+    height: 15%;
+    cursor: pointer;
+    box-shadow: .25vw .25vw .25vw #000000, 0 0 .25vw #0d0d0d;
+    background: #3071a9;
+    border-radius: .25vw;
+    border: .25vh solid #010101;
+}
+
+input[type=range]::-ms-track {
+    width: 100%;
+    height: 15%;
+    cursor: pointer;
+    background: transparent;
+    border-color: transparent;
+    border-width: 16px 0;
+    color: transparent;
+}
+
+input[type=range]::-ms-fill-lower {
+    background: #2a6495;
+    border: .25vh solid #010101;
+    border-radius: .25vw;
+    box-shadow: .25vw .25vw .25vw #000000, 0 0 .25vw #0d0d0d;
+}
+
+input[type=range]:focus::-ms-fill-lower {
+    background: #3071a9;
+}
+
+input[type=range]::-ms-fill-upper {
+    background: #3071a9;
+    border: .25vh solid #010101;
+    border-radius: .25vw;
+    box-shadow: .25vw .25vw .25vw #000000, 0 0 .25vw #0d0d0d;
+}
+
+input[type=range]:focus::-ms-fill-upper {
+    background: #367ebd;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+}
+
+input[type=range]:focus {
+    outline: none;
+    /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+}
+
+input[type=range]::-ms-track {
+    width: 100%;
+    cursor: pointer;
+
+    /* Hides the slider so custom styles can be added */
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+}
+
+/* Special styling for WebKit/Blink */
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: .25vw solid white;
+    height: calc(1.5vh + 1.5vw);
+    width: calc(1.5vh + 1.5vw);
+    border-radius: 50%;
+    background: #094985;
+    cursor: pointer;
+    margin-top: -1.5vh;
+    /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+    box-shadow: .25vw .25vw 0 #000000;
+    /* Add cool effects to your sliders! */
+}
+
+/* All the same stuff for Firefox */
+input[type=range]::-moz-range-thumb {
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    border: 1px solid #000000;
+    height: 3vh;
+    width: 3vh;
+    border-radius: 50%;
+    background: #ffffff;
+    cursor: pointer;
+}
+
+/* All the same stuff for IE */
+input[type=range]::-ms-thumb {
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    border: 1px solid #000000;
+    height: 3vh;
+    width: 3vh;
+    border-radius: 50%;
+    background: #ffffff;
+    cursor: pointer;
+}
+
+@keyframes flash {
+
+    0%,
+    100% {
+        background-color: transparent;
+        text-shadow: none;
+    }
+
+    50% {
+        background-color: rgb(74, 5, 5);
+        text-shadow: 0 0 1vw red, 0 0 2vw red, 0 0 3vw red, 
+        .25vw .25vw 0 rgb(74, 5, 5), .25vw .25vw 0 rgb(74, 5, 5), -.25vw .25vw 0 rgb(74, 5, 5), -.25vw .25vw 0 rgb(74, 5, 5);
+    }
+}
+
+.statDiv.low-lives {
+    animation: flash 1s infinite;
+}
+
+/* === GAME OVER === */
+.container {
+    width: 100vw;
+    height: 100vh;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-over-background {
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(to bottom right, blue, rgb(81, 95, 206));
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    overflow: hidden;
+}
+
+.loser {
+    width: 65%;
+    height: 150%;
+    background: linear-gradient(to bottom right, darkred 30%, rgb(185, 53, 53));
+    rotate: 20deg;
+    transform: translateX(30%);
+}
+
+.game-over-overlay {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 10vw;
+}
+
+.player-container {
+    width: 30%;
+    height: auto;
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.white-line {
+    width: 2.5%;
+    height: 150%;
+    background-color: white;
+    rotate: 20deg;
+    transform: translateX(100%);
+    animation: moveIn 1.5s ease-out;
+    position: relative;
+}
+
+.smaller-line {
+    width: 25%;
+    height: 50%;
+    position: absolute;
+    background-color: white;
+    animation: anti-moveIn 3s ease-out infinite;
+    animation-delay: 1500ms;
+}
+
+#smaller-line-1 {
+    left: -20%;
+    top: 25%;
+}
+
+#smaller-line-2 {
+    right: -20%;
+}
+
+@keyframes moveIn {
+    from {
+        transform: translate(100%, 90%);
+    }
+
+    to {
+        transform: translate(100%, 0%);
+    }
+}
+
+@keyframes anti-moveIn {
+    0% {
+        transform: translateY(0%);
+    }
+
+    50% {
+        transform: translateY(90%);
+    }
+
+    100% {
+        transform: translateY(0%);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        right: -30%;
+        rotate: -15deg;
+    }
+
+    to {
+        right: 35%;
+        rotate: 5deg;
+    }
+}
+
+@keyframes throb {
+    0% {
+        scale: 1;
+    }
+
+    50% {
+        scale: 1.15;
+    }
+
+    100% {
+        scale: 1;
+    }
+}
+
+#exit-button {
+    width: 15%;
+    height: 10%;
+    background-color: darkblue;
+    border: calc(.25vw + .25vh) solid blue;
+    position: absolute;
+    bottom: 2%;
+    right: 2%;
+    color: white;
+    font-size: 2vw;
+    border-radius: 1rem;
+    transition: all .25s;
+    box-shadow: .5vw .5vw 0 black;
+}
+
+#exit-button:hover {
+    background-color: blue;
+    border: calc(.25vw + .25vh) solid darkblue;
+    box-shadow: -.5vw .5vw 0 black;
+}
+
+.game-over-text {
+    position: absolute;
+    font-size: 5vw;
+    font-style: italic;
+    font-weight: bolder;
+    color: white;
+    text-shadow: 0 1vw 1vw black, 0 1vw 1vw black, 0 1vw 1vw black, 0 1vw 1vw black;
+    z-index: 1000;
+    top: 5%;
+    right: 35%;
+    rotate: 5deg;
+    animation: slideIn 1.5s ease-out;
+}
+
+.player-container img {
+    width: 50%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: contain;
+    transform-style: preserve-3d;
+    transform-origin: bottom center;
+}
+
+#winner-player img {
+    animation: winner 5s cubic-bezier(1, 0, 0, 1) infinite;
+}
+
+#loser-player img {
+    animation: loser 5s cubic-bezier(1, 0, 0, 1);
+}
+
+@keyframes winner {
+    0% {
+        transform: scale(1) translateY(0);
+    }
+
+    20% {
+        transform: scale(1.1, 0.9) translateY(5vh);
+    }
+
+    40% {
+        transform: scale(0.95, 1.1) translateY(-8vh);
+    }
+
+    60% {
+        transform: scale(1.2, 0.8) translateY(4vh);
+    }
+
+    80% {
+        transform: scale(1.05, 0.95) translateY(-2vh);
+    }
+
+    100% {
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes loser {
+    0% {
+        transform: translateY(0) rotate(0);
+    }
+
+    20% {
+        transform: translateY(-5vh) rotate(-15deg);
+    }
+
+    40% {
+        transform: translateY(-15vh) rotate(15deg);
+    }
+
+    60% {
+        transform: translateY(-30vh) rotate(30deg);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: translateY(-100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+.stats {
+    width: 100%;
+    height: 35%;
+    background-color: #333;
+    border: calc(.25vw + .25vh) solid white;
+    border-radius: 1vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    font-size: calc(1vw + 1vh);
+    text-align: center;
+}
+
+.winner-stats .score-stats,
+#winner-username {
+    color: limegreen;
+}
+
+.loser-stats .score-stats,
+#loser-username {
+    color: red;
+}
+
+.player-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    height: 75%;
+    width: 100%;
+}
+
+.player-stats-grid>div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: calc(.25vw + .25vh) solid white;
+}
+
+.score-info {
+    color: white;
+    font-size: inherit;
+}
+
+.pause-screen {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8);
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5vh;
+}
+
+.pause-span {
+    font-size: calc(4vw + 4vh);
+}
+
+.pause-btn {
+    width: 25vw;
+    height: auto;
+    aspect-ratio: 3;
+    border-radius: 2vw;
+    transition: all .25s;
+    font-size: calc(3vw + 3vh);
+}
+
+.pause-btn:hover {
+    box-shadow: -.5vw .5vw 0 black;
+}

@@ -1,0 +1,179 @@
+.profile-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    width: 75%;
+    height: fit-content;
+    gap: 30vh;
+    overflow-y: scroll;
+    padding-top: 15vh;
+    padding-bottom: 5vh;
+    z-index: 3;
+    will-change: transform;
+    scroll-snap-type: y mandatory;
+}
+
+.profile-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 75vw;
+    height: 75vh;
+    background: linear-gradient(120deg, #a16533 30%, rgb(214, 162, 95));
+    border: calc(.5vw + .5vh) solid #3b1c03;
+    border-radius: 2vw;
+    font-size: clamp(1rem, calc(1.5vw + 1.5vh), 3rem);
+    text-shadow: 0 0 1vw black;
+    scroll-snap-align: center;
+}
+
+.profile-top-bar {
+    width: 100%;
+    max-height: 35%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-size: clamp(2.5vw, calc(1.5vw + 1.5vh), 3vw);
+    font-family: "Comic Sans MS";
+}
+
+.player-icon {
+    height: 100%;
+    width: auto;
+    aspect-ratio: 1;
+    background: linear-gradient(120deg, #a16533 30%, rgb(214, 162, 95));
+    border: .5rem solid #3b1c03;
+    border-top: none;
+    border-left: none;
+    border-radius: 1vw 0 2vw 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.player-icon img {
+    width: 85%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: contain;
+    filter: drop-shadow(0 1vw 1vw black);
+}
+
+.side-section {
+    width: 80%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.player-name,
+.player-skin-title {
+    width: 100%;
+    height: 45%;
+    background: linear-gradient(-120deg, rgb(143, 86, 18), #8f5919);
+    border: calc(.25vw + .25vh) solid #3a1c04;
+    border-radius: 2vw 0 0 2vw;
+    box-shadow: 0 0 1vw black inset;
+}
+
+.player-name {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.player-name input {
+    width: 50%;
+    height: 85%;
+    background-color: rgba(0, 0, 0, .5);
+    backdrop-filter: blur(1vw);
+    outline: none;
+    border: none;
+    border-radius: 1vw;
+    color: white;
+    font-size: clamp(2.5vw, calc(1.5vw + 1.5vh), 3vw);
+    font-family: "Comic Sans MS";
+}
+
+#createBackup {
+    width: 35%;
+    height: 85% !important;
+}
+
+.player-skin-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.locked {
+    filter: grayscale(50%);
+}
+
+.locked::before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: linear-gradient(120deg, rgb(25, 24, 24) 40%, gray 60%);
+    opacity: .8;
+    z-index: 4;
+    overflow: hidden;
+}
+
+.player-skin-title::before {
+    border-radius: 2vw 0 0 2vw;
+}
+
+ .profile-stats {
+    width: 100%;
+    /* height: 60%; */
+    background: #f0b184;
+    background: radial-gradient(circle, rgba(240, 177, 132, 1) 25%, rgba(181, 107, 42, 1) 75%, rgba(39, 20, 4, 1) 100%);
+    border-top: calc(.5vw + .5vh) solid #3a1c04;
+    border-radius: 0 0 1vw 1vw;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 1vw;
+    padding: 4vw;
+    overflow: hidden;
+
+}
+
+.profile-stat-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: .5vw;
+    height: max-content;
+}
+
+.profile-stat-span {
+    width: 100%;
+    max-height: 30%;
+    text-align: center;
+}
+
+.profile-stat-box {
+    width: 100%;
+    max-height: 65%;
+    background-color: rgba(0, 0, 0, .5);
+    border: .5vw solid black;
+    border-radius: 1vw;
+    text-align: center;
+    color: white;
+}

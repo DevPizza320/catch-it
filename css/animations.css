@@ -1,0 +1,12 @@
+@keyframes idleRotate {
+    0% { transform: rotateX(0deg) rotateY(0deg) translateY(0vh); }
+    50% { transform: rotateX(10deg) rotateY(180deg) translateY(-2.5vh); }
+    100% { transform: rotateX(0deg) rotateY(0deg) translateY(0vh); }
+}
+
+@keyframes upgradeSpin {
+    0% { transform: rotateX(0deg) rotateY(0deg) translateY(0); }
+    30% { transform: rotateX(20deg) rotateY(360deg) translateY(-2vh); }
+    60% { transform: rotateX(-20deg) rotateY(450deg) translateY(1vh); }
+    100% { transform: rotateX(0deg) rotateY(0deg) translateY(0vh); }
+}

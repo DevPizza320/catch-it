@@ -1,0 +1,43 @@
+:root {
+    --space-border: #ffffff;
+    --space-fill-left: #083948;
+    --space-fill-right: #237a94;
+    --space-fill-bottom-left: #03232d;
+    --space-fill-bottom-right: #105469;
+    --space-color: rgb(205, 46, 73);
+
+    --forest-border: #4a2d25;
+    --forest-fill-left: green;
+    --forest-fill-right: rgb(36, 214, 36);
+    --forest-fill-bottom-left: rgb(3, 71, 3);
+    --forest-fill-bottom-right: rgb(22, 103, 22);
+    --forest-color: rgb(120, 255, 83);
+
+    --halloween-border: brown;
+    --halloween-fill-left: rgb(255, 132, 0);
+    --halloween-fill-right: orange;
+    --halloween-fill-bottom-left: rgb(169, 62, 9);
+    --halloween-fill-bottom-right: rgb(209, 82, 40);
+    --halloween-color: rgb(75, 15, 12);
+
+    --christmas-border: red;
+    --christmas-fill-left:rgb(154, 39, 39);
+    --christmas-fill-right:rgb(193, 67, 67);
+    --christmas-fill-bottom-left: rgb(85, 10, 21);
+    --christmas-fill-bottom-right: rgb(162, 51, 51);
+    --christmas-color: white;
+
+    --the-first-night-border: rgb(23, 87, 87);
+    --the-first-night-fill-left: #1b3138;
+    --the-first-night-fill-right: #0b4151;
+    --the-first-night-fill-bottom-left: rgb(3, 42, 3);
+    --the-first-night-fill-bottom-right: rgb(6, 53, 6);
+    --the-first-night-color: rgb(33, 173, 159);
+
+    --the-deep-dark-border: #75c8e4;
+    --the-deep-dark-fill-left: #162a30;
+    --the-deep-dark-fill-right: #062c38;
+    --the-deep-dark-fill-bottom-left: #111b1e;
+    --the-deep-dark-fill-bottom-right: #0a232a;
+    --the-deep-dark-color: #4bb3b3;
+}
