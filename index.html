@@ -383,11 +383,12 @@
     </div>
     <script type="module" src="./js/data/assets.js"></script>
     <script type="module">
-        // document.addEventListener("contextmenu", (e) => {
-        //     e.preventDefault();
-        // });
         import * as loader from "./js/loader.js"
         import { gameAssets } from "./js/data/assets.js"
+        
+        document.addEventListener("contextmenu", (e) => {
+            e.preventDefault();
+        });
 
         loader.initLoaderDOM();
 
@@ -440,21 +441,6 @@
     </script>
     <script type="module" src="./js/data/players.js"></script>
     <script type="module" src="./js/data/skins.js"></script>
-    <script type="module">
-        // import * as utils from "./js/data/helper-functions.js"
-        // import { allPlayerData } from "./js/data/players.js"
-        // import { allSkins, rarityInfo, levelData } from "./js/data/skins.js"
-
-        // window.addEventListener("load", async () => {
-        //     const assets = [];
-
-        //     for (const key in allPlayerData) {
-        //         assets.push({src: allPlayerData[key], type: 'image'})
-        //     }
-        // })
-
-
-    </script>
 </body>
 
 </html>
