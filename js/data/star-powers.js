@@ -1,4 +1,4 @@
-import * as fn from "/js/game/functions/game-functions.js"
+import * as fn from "./js/game/functions/game-functions.js"
 
 
 
