@@ -297,7 +297,7 @@ export function generateGameOverScreen(players, loserIndex, url) {
         </div>
         <div class="game-over-overlay">
             <div class="player-container" id="winner-player">
-                <img src="../../../${winnerSrc}">
+                <img src="${winnerSrc}">
                 <div class="stats winner-stats">
                     <span id="winner-username">${allPlayerData[allPlayerData.playerSelection.twoSelectedPlayers[winnerIndex]].username || "Player 1"} - Winner!</span>
                     <div class="player-stats-grid">
@@ -325,7 +325,7 @@ export function generateGameOverScreen(players, loserIndex, url) {
                 <div class="smaller-line" id="smaller-line-2"></div>
             </div>
             <div class="player-container" id="loser-player">
-                <img src="../../../${loserSrc}">
+                <img src="${loserSrc}">
                 <div class="stats loser-stats">
                     <span id="loser-username">${allPlayerData[allPlayerData.playerSelection.twoSelectedPlayers[loserIndex]].username || "Player 2"} - Loser!</span>
                     <div class="player-stats-grid">

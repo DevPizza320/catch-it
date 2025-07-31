@@ -221,8 +221,7 @@
                 g.checkCollisions(
                     assets.balls, assets.players, null,
                     (i, obj) => [
-                        { fn: (player) => { player.score += 100; player.caughtBalls++; console.log(player.caughtBalls) }, args: [assets.players[i]] },
-                        // { fn: g.doBallRewards, args: [[assets.players[i], DIFFICULTY_MULTIPLIER]] }
+                        { fn: (player) => { player.score += 100; player.caughtBalls++; }, args: [assets.players[i]] },
                         { fn: (p, m) => { g.doBallRewards(p, m) }, args: [assets.players, DIFFICULTY_MULTIPLIER] }
                     ]
                 );
