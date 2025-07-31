@@ -15,7 +15,7 @@ export function initializeGameObjects(canvas, particles, extraProps = {}) {
 
         // Get selectedSkin info
         const selectedSkinObj = playerData.skins.selectedSkin;
-        const fallbackSkin = "Basket";
+        const fallbackSkin = "../../../Media/Skins/Basket.png";
 
         const selectedSkinName = selectedSkinObj?.name ?? fallbackSkin;
         const selectedSkinSrc = "../../../" + selectedSkinObj?.src ?? "../../../Media/Skins/Basket.png";
