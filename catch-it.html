@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en" style="background-color: #333;">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catch It!</title>
+  <link rel="icon" href="Media/Background/CatchIt.png" type="image/png">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/button-styles.css">
+  <link rel="stylesheet" href="css/color-db.css">
+  <link rel="stylesheet" href="css/ui.css">
+  <link rel="stylesheet" href="css/skins.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/levels.css">
+  <link rel="stylesheet" href="css/settings.css">
+  <link rel="stylesheet" href="css/profile.css">
+</head>
+
+<body>
+  <!-- Orientation -->
+  <div class="rotate-screen">
+    <p>Please rotate your device!</p>
+  </div>
+
+  <!-- Main Canvas -->
+  <canvas id="jungleCanvas"></canvas>
+
+  <video id="backgroundVideo" preload="auto" autoplay muted loop>
+    <source src="Media/Background/Videos/BackgroundVideo.mp4" type="video/mp4">
+  </video>
+
+  <!-- Audio element for background music -->
+  <audio id="backgroundAudio" autoplay loop>
+    Your browser does not support the audio element.
+  </audio>
+
+  <!-- Button containers -->
+  <div class="home-screen" id="buttonContainerLeft">
+    <button class="woodenButton" id="shopButton">
+      <span>Shop</span>
+      <img class="main-icon" src="Media/Icons/Shop.png" alt="Shop Icon">
+    </button>
+    <button class="woodenButton" id="skinButton">
+      <span>Skins</span>
+      <img class="main-icon" src="Media/Icons/Skins.png" alt="Skins Icon">
+    </button>
+    <button class="woodenButton" id="newsButton">
+      <span>News</span>
+      <img class="main-icon" src="Media/Icons/News.png" alt="News Icon">
+    </button>
+  </div>
+  <div class="home-screen" id="buttonContainerCenter">
+    <button class="woodenButton" id="levelsButton">Levels</button>
+    <button class="woodenButton">How to Play</button>
+    <button class="woodenButton" id="musicButton">Start Music</button>
+    <button class="woodenButton" id="exitButton">Exit</button>
+  </div>
+  <div class="home-screen" id="buttonContainerRight">
+    <button class="woodenButton" id="achievementButton">
+      <span>Quests</span>
+      <img class="main-icon" src="Media/Icons/Achievement.png" alt="Achievements Icon">
+    </button>
+    <button class="woodenButton" id="powerupButton">
+      <span>Powers</span>
+      <img class="main-icon" src="Media/Icons/PowerUp.png" alt="Power Up Icon">
+    </button>
+    <button class="woodenButton" id="lootcrateButton">
+      <span>Boxes</span>
+      <img class="main-icon" src="Media/Icons/LootCrate.png" alt="Loot Crate Icon">
+    </button>
+  </div>
+  <div class="home-screen" id="profileButton">
+    <button class="woodenButton" id="playerButton">
+      <img class="main-icon" src="Media/Icons/Profile.png" alt="Profile Icon">
+    </button>
+  </div>
+  <div class="home-screen" id="settingsButton">
+    <button class="woodenButton" id="changesButton">
+      <img class="main-icon" src="Media/Icons/Settings.png" alt="Settings Icon">
+    </button>
+  </div>
+
+  <!-- Currency Buttons-->
+  <div id="currencyButtons">
+    <button class="currencyButton" id="p1GemButton">
+      <img src="Media/Icons/Gem.png" alt="Gem Icon">
+      <span></span>
+    </button>
+    <button class="currencyButton" id="p2GemButton">
+      <img src="Media/Icons/Gem.png" alt="Gem Icon">
+      <span></span>
+    </button>
+    <button class="currencyButton" id="p1CatchCoinButton">
+      <img src="Media/Icons/Coin.png" alt="Coin Icon">
+      <span></span>
+    </button>
+    <button class="currencyButton" id="p2CatchCoinButton">
+      <img src="Media/Icons/Coin.png" alt="Coin Icon">
+      <span></span>
+    </button>
+  </div>
+
+  <!-- Version -->
+  <div class="home-screen" id="versionButton">
+    <button class="woodenButton" id="versionButton" data data-category="true">v 1.0</button>
+  </div>
+
+  <!-- Back Button for other canvases -->
+  <button class="woodenButton" id="backButton">&#x2190;</button>
+
+  <!-- Profile Canvas -->
+  <canvas class="window-canvas" id="profileCanvas"></canvas>
+
+  <div class="profile-wrapper">
+    <div class="profile" id="p1Profile">
+      <div class="profile-top-bar">
+        <div class="player-icon">
+          <img src="Media/Skins/Basket.png" alt="Skin">
+        </div>
+        <div class="side-section">
+          <div class="player-name">
+            <input id="player-1-name" type="text" maxlength="12" placeholder="Enter username...">
+            <button class="woodenButton" id="createBackup">Backup Data</button>
+          </div>
+          <div class="player-skin-title locked">For future update</div>
+        </div>
+      </div>
+      <div class="profile-stats">
+        <div class="profile-stat-div">
+          <span class="profile-stat-span">Score:</span>
+          <div class="profile-stat-box" id="player-1-score">0</div>
+        </div>
+        <div class="profile-stat-div">
+          <span class="profile-stat-span">Caught Balls:</span>
+          <div class="profile-stat-box" id="player-1-caught-balls">0</div>
+        </div>
+        <div class="profile-stat-div">
+          <span class="profile-stat-span">Lives Gained:</span>
+          <div class="profile-stat-box" id="player-1-lives-gained">0</div>
+        </div>
+        <div class="profile-stat-div">
+          <span class="profile-stat-span">Lives Lost:</span>
+          <div class="profile-stat-box" id="player-1-lives-lost">0</div>
+        </div>
+        <div class="profile-stat-div">
+          <span class="profile-stat-span">LG/LL:</span>
+          <div class="profile-stat-box" id="player-1-lgll">0</div>
+        </div>
+      </div>
+    </div>
+    <div class="profile" id="p2Profile">
+      <div class="profile-top-bar">
+        <div class="player-icon">
+          <img src="Media/Skins/Basket.png" alt="Skin">
+        </div>
+        <div class="side-section">
+          <div class="player-name">
+            <input id="player-2-name" type="text" maxlength="12" placeholder="Enter username...">
+            <button class="woodenButton" id="createBackup">Backup Data</button>
+          </div>
+          <div class="player-skin-title locked">For future update</div>
+        </div>
+      </div>
+      <div class="profile-stats">
+        <div class="profile-stat-div">
+          <span class="profile-stat-span">Score:</span>
+          <div class="profile-stat-box" id="player-2-score">0</div>
+        </div>
+        <div class="profile-stat-div">
+          <span class="profile-stat-span">Caught Balls:</span>
+          <div class="profile-stat-box" id="player-2-caught-balls">0</div>
+        </div>
+        <div class="profile-stat-div">
+          <span class="profile-stat-span">Lives Gained:</span>
+          <div class="profile-stat-box" id="player-2-lives-gained">0</div>
+        </div>
+        <div class="profile-stat-div">
+          <span class="profile-stat-span">Lives Lost:</span>
+          <div class="profile-stat-box" id="player-2-lives-lost">0</div>
+        </div>
+        <div class="profile-stat-div">
+          <span class="profile-stat-span">LG/LL:</span>
+          <div class="profile-stat-box" id="player-2-lgll">0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <!-- Settings Canvas-->
+  <canvas class="window-canvas" id="settingsCanvas"></canvas>
+
+  <div class="settings-wrapper">
+    <div class="upper-settings-bar">
+      <div class="first-setting-group">
+        <div class="button-group">
+          <div class="woodenButton" id="spawnLeavesText" data-category="true">Leaves:</div>
+          <button class="woodenButton" id="spawnLeavesButton"></button>
+        </div>
+        <div class="button-group">
+          <div class="woodenButton" id="leavesIntervalText" data-category="true">Leaf Rate:</div>
+          <button class="woodenButton" id="spawnIntervalButton">1000</button>
+        </div>
+        <div class="button-group">
+          <div class="woodenButton" id="musicVolumeText" data-category="true">Music:</div>
+          <button class="woodenButton" id="musicVolumeButton">0.5</button>
+        </div>
+        <div class="button-group">
+          <div class="woodenButton" id="sfxVolumeText" data-category="true">SFX:</div>
+          <button class="woodenButton" id="sfxVolumeButton">0.5</button>
+        </div>
+      </div>
+      <div class="second-setting-group">
+        <div class="button-group" id="left-group">
+          <button class="woodenButton" id="marker" data-category="true">Movement:</button>
+        </div>
+        <div class="button-group" id="right-group">
+          <button class="woodenButton" id="playerToggleButton">Player 1</button>
+        </div>
+      </div>
+    </div>
+    <div class="lower-settings-bar">
+      <div class="lower-group">
+        <div class="button-group">
+          <div class="woodenButton" id="difficultyText" data-category="true">Difficulty:</div>
+          <button class="woodenButton" id="difficultyButton">Potato</button>
+        </div>
+        <div class="button-group">
+          <div class="woodenButton" id="timeText" data-category="true">Timer:</div>
+          <button class="woodenButton" id="timeButton"></button>
+        </div>
+        <div class="button-group">
+          <div class="woodenButton" id="bgMusicText" data-category="true">Music:</div>
+          <button class="woodenButton" id="bgMusicButton"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Levels Canvas -->
+  <canvas class="window-canvas" id="levelsCanvas"></canvas>
+
+  <div class="levels-container">
+    <div class="level" id="space-race-level">
+      <div class="level-name-bar">
+        <span class="level-name-text">Space Race</span>
+      </div>
+      <div class="image-bar" id="space-image-bar"></div>
+      <div class="level-nav-bar">
+        <div class="level-nav-container">
+          <div class="level-spacer-button"></div>
+          <a class="level-select-button" href="js/game/game-levels/space-race.html">
+            <span>Play</span>
+          </a>
+          <button class="current-setup-button">i</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="level" id="forest-level">
+      <div class="level-name-bar">
+        <span class="level-name-text">Forest</span>
+      </div>
+      <div class="image-bar" id="forest-image-bar"></div>
+      <div class="level-nav-bar">
+        <div class="level-nav-container">
+          <div class="level-spacer-button"></div>
+          <a class="level-select-button" href="js/game/game-levels/forest.html">
+            <span>Play</span>
+          </a>
+          <button class="current-setup-button">i</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="level" id="halloween-level">
+      <div class="level-name-bar">
+        <span class="level-name-text">Halloween</span>
+      </div>
+      <div class="image-bar" id="halloween-image-bar"></div>
+      <div class="level-nav-bar">
+        <div class="level-nav-container">
+          <div class="level-spacer-button"></div>
+          <a class="level-select-button" href="js/game/game-levels/halloween.html">
+            <span>Play</span>
+          </a>
+          <button class="current-setup-button">i</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="level" id="christmas-level">
+      <div class="level-name-bar">
+        <span class="level-name-text">Christmas</span>
+      </div>
+      <div class="image-bar" id="christmas-image-bar"></div>
+      <div class="level-nav-bar">
+        <div class="level-nav-container">
+          <div class="level-spacer-button"></div>
+          <button class="level-select-button">Play</button>
+          <button class="current-setup-button">i</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="level" id="the-first-night-level">
+      <div class="level-name-bar">
+        <div class="level-name-text">The First Night</div>
+      </div>
+      <div class="image-bar" id="the-first-night-image-bar"></div>
+      <div class="level-nav-bar">
+        <div class="level-nav-container">
+          <div class="level-spacer-button"></div>
+          <button class="level-select-button">Play</button>
+          <button class="current-setup-button">i</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="level" id="the-deep-dark-level">
+      <div class="level-name-bar">
+        <div class="level-name-text">The Deep Dark - Boss Fight</div>
+      </div>
+      <div class="image-bar" id="the-deep-dark-image-bar"></div>
+      <div class="level-nav-bar">
+        <div class="level-nav-container">
+          <div class="level-spacer-button"></div>
+          <button class="level-select-button">Play</button>
+          <button class="current-setup-button">i</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skins Canvas-->
+  <canvas class="window-canvas wooden" id="skinsCanvas"></canvas>
+
+  <div class="playerSelection">
+    <button class="woodenButton" id="player-1-selector">
+      <img src="Media/Skins/Basket.png">
+      <span></span>
+    </button>
+    <button class="woodenButton" id="player-2-selector">
+      <img src="Media/Skins/Basket.png">
+      <span></span>
+    </button>
+  </div>
+
+  <div id="skinShowDiv1" class="skinShowDiv" style="display: none;"></div>
+  <div id="skinShowDiv2" class="skinShowDiv" style="display: none"></div>
+
+
+  <div class="window-canvas" id="skinDetailsDiv">
+    <div id="skin-bar">
+      <div id="skin-info">
+        <p class="stat-text">Hello World!</p>
+      </div>
+      <div id="skin-image">
+        <div id="skin-name">
+          <span class="stat-text"></span>
+        </div>
+        <img id="skin-img" src="Media/Skins/ShoppingCart.png">
+        <div class="spacer"></div> <!-- Empty spacer div -->
+      </div>
+      <div id="skin-stats">
+        <div class="spacer"></div> <!-- Empty spacer div -->
+        <div id="stats-grid">
+          <!-- Top Left: Image Placeholder -->
+          <div class="open-star-pwr-window stat-item img">
+            <img src="Media/Star Powers/GoBigOrGoHome.png" class="stat-icon locked">
+            <span class="stat-text icon-text">Gotta Go!</span>
+          </div>
+
+          <!-- Top Right: Image Placeholder -->
+          <div class="open-star-pwr-window stat-item img">
+            <img src="Media/Star Powers/BasketBattalion.png" class="stat-icon locked">
+            <span class="stat-text icon-text">Heart of Iron</span>
+          </div>
+
+          <!-- Bottom Left: Health Icon + Text -->
+          <div class="stat-item">
+            <img src="Media/Icons/Health.png" class="stat-icon">
+            <span class="stat-text icon-text" id="skin-health"></span>
+          </div>
+
+          <!-- Bottom Right: Speed Icon + Text -->
+          <div class="stat-item">
+            <img src="Media/Icons/Speed.png" class="stat-icon">
+            <span class="stat-text icon-text" id="skin-speed"></span>
+          </div>
+        </div>
+        <div id="powerpoints-bar">
+          <span class="skin-text" id="powerpoints-text"></span>
+          <div id="powerpoints-fill"></div>
+        </div>
+      </div>
+    </div>
+    <div class="lower-bar">
+      <div class="arrows">
+        <img class="arrow-icon left-arrow hoverable" src="Media/Icons/LeftArrow.png" alt="Left Arrow">
+        <img class="arrow-icon right-arrow hoverable" src="Media/Icons/RightArrow.png" alt="Right Arrow">
+      </div>
+      <button class="window-button" id="select-button">
+        <span class="skin-text">Select</span>
+      </button>
+      <button class="window-button" id="upgrade-button">
+        <span class="skin-text" id="upgrade-cost-text"></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="empty-canvas" id="forStarPowers">
+    <div class="window-canvas" id="star-power-window">
+      <div class="current-skin" id="current-skin">
+        <img class="current-skin-img" id="current-skin-img" src="Media/Skins/Basket.png" alt="Current Skin">
+      </div>
+      <div class="star-powers">
+        <div class="star-power-top-bar">
+          <div class="star-power-list">
+            <img src="Media/Star Powers/GoBigOrGoHome.png">
+            <img src="Media/Star Powers/BasketBattalion.png">
+          </div>
+        </div>
+        <div class="star-powers-desc">
+          <div class="star-pwr-desc-img">
+            <img class="star-pwr-img" src="Media/Star Powers/GoBigOrGoHome.png" alt="Current Star Power">
+          </div>
+          <span class="stat-text icon-text star-pwr-desc-name"></span>
+          <span class="stat-text icon-text star-pwr-desc-desc"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="js/data/players.js"></script>
+  <script type="module" src="js/data/skins.js"></script>'
+  <script type="module" src="js/data/game-levels.js"></script>
+  <script type="module" src="js/data/assets.js"></script>
+  <script type="module" src="js/data/helper-functions.js"></script>
+  <script type="module" src="js/data/game-objects.js"></script>
+  <script type="module" src="js/data/star-powers.js"></script>
+  <script type="module" src="js/game/functions/effects.js"></script>
+  <script type="module" src="js/game/functions/game-functions.js"></script>
+  <script type="module" src="js/profile.js"></script>
+  <script type="module" src="js/settings.js"></script>
+  <script type="module" src="js/CatchIt.js"></script>
+  <script type="module" src="js/player-data.js"></script>
+  <script type="module" src="js/buttons.js"></script>
+  <script type="module" src="js/show-skins.js"></script>
+  <script type="module" src="js/skins.js"></script>
+  <script type="module" src="js/upgrading.js"></script>
+  <script type="module" src="js/backup.js"></script>
+  <script src="js/animations.js"></script>
+</body>
+
+</html>

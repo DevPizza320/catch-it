@@ -96,7 +96,7 @@ export async function preloadManualAssets(assets, delayMs = 100) {
             loadingFill.style.width = `${percent}%`;
         } else {
             loadingText.textContent = "Loading complete";
-            window.location.replace('index.html');
+            window.location.replace('catch-it.html');
         }
     }
 

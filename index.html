@@ -1,457 +1,460 @@
 <!DOCTYPE html>
-<html lang="en" style="background-color: #333;">
+<html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Catch It!</title>
-  <link rel="icon" href="Media/Background/CatchIt.png" type="image/png">
-  <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/button-styles.css">
-  <link rel="stylesheet" href="css/color-db.css">
-  <link rel="stylesheet" href="css/ui.css">
-  <link rel="stylesheet" href="css/skins.css">
-  <link rel="stylesheet" href="css/animations.css">
-  <link rel="stylesheet" href="css/levels.css">
-  <link rel="stylesheet" href="css/settings.css">
-  <link rel="stylesheet" href="css/profile.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Catch It!</title>
+    <link rel="shortcut icon" href="Media/Background/CatchIt.png" type="image/png" />
+    <style>
+        /* === PAGE STYLING === */
+        html {
+            overflow: hidden;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: url("Media/Background/loading.png") no-repeat center center;
+            background-size: cover;
+            backdrop-filter: blur(0.25vw);
+            font-family: "Comic Sans MS", sans-serif;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2vh;
+            position: relative;
+        }
+
+        * {
+            font-family: "Comic Sans MS", sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -webkit-user-drag: none;
+            -moz-user-drag: none;
+            -ms-user-drag: none;
+            outline: none;
+            box-sizing: border-box;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+        }
+
+        /* === EMPTY CONTAINER FOR ANIMATIONS */
+        .animation-container {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            background-color: black;
+            z-index: 4;
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .leaf-container {
+            width: 100%;
+            height: 110vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0;
+            z-index: 1;
+        }
+
+        .leaf {
+            height: 110vh;
+            object-fit: contain;
+            opacity: 0.9;
+            transform-origin: top center;
+        }
+
+        .leaf:first-child {
+            animation: leafSwayLandscapeLeft 6s ease-in-out infinite;
+        }
+
+        .leaf:last-child {
+            animation: leafSwayLandscapeRight 6s ease-in-out infinite;
+        }
+
+
+        @keyframes leafSwayPortraitTop {
+
+            0%,
+            100% {
+                transform: scaleY(-1) rotate(0deg);
+            }
+
+            50% {
+                transform: scaleY(-1) rotate(1deg);
+            }
+        }
+
+        @keyframes leafSwayPortraitBottom {
+
+            0%,
+            100% {
+                transform: rotate(0deg);
+            }
+
+            50% {
+                transform: rotate(1deg);
+            }
+        }
+
+        @keyframes leafSwayLandscapeLeft {
+
+            0%,
+            100% {
+                transform: rotate(0deg);
+            }
+
+            50% {
+                transform: rotate(1deg);
+            }
+        }
+
+        @keyframes leafSwayLandscapeRight {
+
+            0%,
+            100% {
+                transform: scaleY(-1) rotate(0deg);
+            }
+
+            50% {
+                transform: scaleY(-1) rotate(1deg);
+            }
+        }
+
+        /* === FOG/VINE OVERLAY === */
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 20% 40%, rgba(0, 0, 0, 0.15) 0%, transparent 70%),
+                radial-gradient(circle at 80% 70%, rgba(0, 0, 0, 0.2) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        /* === CONTAINER === */
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: fit-content;
+            width: calc(25vw + 25vh);
+            gap: calc(1vw + 1vh);
+        }
+
+        /* === TITLE TEXT === */
+        .game-title {
+            font-size: clamp(4rem, calc(6vw + 6vh), 8rem);
+            font-weight: bold;
+            background: linear-gradient(to bottom right, #be7436, #875124, #3d1e05);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            -webkit-text-stroke: 0.4vw tan;
+            animation: gradient 8s ease-in-out infinite;
+            background-size: 300% 300%;
+            margin: 0;
+            text-align: center;
+            white-space: pre;
+            z-index: 3;
+
+            text-shadow: -0.5vw -0.5vw 1vw #00000055;
+        }
+
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* === LOGO CONTAINER === */
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 75%;
+            height: auto;
+            aspect-ratio: 1;
+            background-color: rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0.5vw 1vw black, 0 0.5vw 1vw black, 0 1vw 1vw black;
+            border-radius: 1vw;
+            animation: pulseZoom 6s ease-in-out infinite;
+            z-index: 3;
+        }
+
+        @keyframes pulseZoom {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.03);
+            }
+        }
+
+        .main-container img {
+            width: 90%;
+            height: auto;
+            filter: drop-shadow(0 1vw 1vw black);
+        }
+
+        /* === PLAY BUTTON === */
+        .play-button {
+            width: max(50%, calc(20vw + 20vh));
+            height: auto;
+            aspect-ratio: 5;
+            margin-top: 2vh;
+            font-size: 2vw;
+            font-family: inherit;
+            color: rgb(5, 56, 5);
+            background: linear-gradient(to right, #2e7d32, #388e3c);
+            border: calc(.5vw + .5vh) solid rgb(5, 56, 5);
+            border-radius: 2vw;
+            cursor: pointer;
+            box-shadow: .5vw .5vw 0 black;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            z-index: 3;
+            animation: pulseZoom 6s ease-in-out infinite;
+        }
+
+        .play-button:hover {
+            transform: scale(1.05);
+            box-shadow: -.5vw .5vw 0 black;
+            color: #388e3c;
+            background: rgb(5, 56, 5);
+            border: calc(.5vw + .5vh) solid #388e3c;
+        }
+
+        .play-button:active {
+            transform: scale(0.98);
+        }
+
+        .loading-container {
+            background: url("Media/Background/loading.png") no-repeat center center;
+            width: 100vw;
+            height: 100vh;
+            display: none;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            gap: calc(10vw + 10vh);
+            position: absolute;
+            z-index: 5;
+        }
+
+        .loading-container img {
+            width: 60%;
+            height: auto;
+            filter: drop-shadow(.5vw .5vw 0 black);
+        }
+
+        .loader-wrapper {
+            width: 90%;
+            height: 7.5%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 5vh;
+        }
+
+        .loader {
+            width: 90%;
+            min-height: 75%;
+            border-radius: calc(2vw + 2vh);
+            border: calc(.5vw + .5vh) solid #331a06;
+            background-color: #331a06;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loader-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: linear-gradient(30deg, #703d14 40%, rgb(194, 151, 94));
+            transform: skew(-15deg);
+            z-index: 2;
+            pointer-events: none;
+            transition: all 0.5s;
+        }
+
+        .loader-text {
+            font-size: clamp(4rem, calc(2vw + 2vh), 8rem);
+            font-weight: bolder;
+            background: linear-gradient(to bottom right, #be7436, #875124, #3d1e05);
+            -webkit-text-stroke: 0.25vw tan;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 300% 300%;
+            margin: 0;
+            text-align: center;
+            white-space: pre;
+            z-index: 3;
+
+            text-shadow: -0.5vw -0.5vw 1vw #00000055;
+        }
+
+        .loader-tip {
+            font-size: clamp(1.5rem, 1.5vw + 1.5vh, 2.5rem);
+            font-weight: bold;
+            background: linear-gradient(to bottom right, #be7436, #d0996c, #d7aa86);
+            -webkit-text-stroke: 0.15vw #231103;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-top: 1vh;
+            text-align: center;
+            white-space: pre;
+            text-shadow: -0.3vw -0.3vw 0.75vw #00000055;
+        }
+
+        /* === MOBILE RESPONSIVE === */
+        @media screen and (orientation: portrait) {
+            .leaf-container {
+                display: none;
+            }
+        }
+    </style>
 </head>
 
 <body>
-  <!-- Orientation -->
-  <div class="rotate-screen">
-    <p>Please rotate your device!</p>
-  </div>
-
-  <!-- Main Canvas -->
-  <canvas id="jungleCanvas"></canvas>
-
-  <video id="backgroundVideo" preload="auto" autoplay muted loop>
-    <source src="Media/Background/Videos/BackgroundVideo.mp4" type="video/mp4">
-  </video>
-
-  <!-- Audio element for background music -->
-  <audio id="backgroundAudio" autoplay loop>
-    Your browser does not support the audio element.
-  </audio>
-
-  <!-- Button containers -->
-  <div class="home-screen" id="buttonContainerLeft">
-    <button class="woodenButton" id="shopButton">
-      <span>Shop</span>
-      <img class="main-icon" src="Media/Icons/Shop.png" alt="Shop Icon">
-    </button>
-    <button class="woodenButton" id="skinButton">
-      <span>Skins</span>
-      <img class="main-icon" src="Media/Icons/Skins.png" alt="Skins Icon">
-    </button>
-    <button class="woodenButton" id="newsButton">
-      <span>News</span>
-      <img class="main-icon" src="Media/Icons/News.png" alt="News Icon">
-    </button>
-  </div>
-  <div class="home-screen" id="buttonContainerCenter">
-    <button class="woodenButton" id="levelsButton">Levels</button>
-    <button class="woodenButton">How to Play</button>
-    <button class="woodenButton" id="musicButton">Start Music</button>
-    <button class="woodenButton" id="exitButton">Exit</button>
-  </div>
-  <div class="home-screen" id="buttonContainerRight">
-    <button class="woodenButton" id="achievementButton">
-      <span>Quests</span>
-      <img class="main-icon" src="Media/Icons/Achievement.png" alt="Achievements Icon">
-    </button>
-    <button class="woodenButton" id="powerupButton">
-      <span>Powers</span>
-      <img class="main-icon" src="Media/Icons/PowerUp.png" alt="Power Up Icon">
-    </button>
-    <button class="woodenButton" id="lootcrateButton">
-      <span>Boxes</span>
-      <img class="main-icon" src="Media/Icons/LootCrate.png" alt="Loot Crate Icon">
-    </button>
-  </div>
-  <div class="home-screen" id="profileButton">
-    <button class="woodenButton" id="playerButton">
-      <img class="main-icon" src="Media/Icons/Profile.png" alt="Profile Icon">
-    </button>
-  </div>
-  <div class="home-screen" id="settingsButton">
-    <button class="woodenButton" id="changesButton">
-      <img class="main-icon" src="Media/Icons/Settings.png" alt="Settings Icon">
-    </button>
-  </div>
-
-  <!-- Currency Buttons-->
-  <div id="currencyButtons">
-    <button class="currencyButton" id="p1GemButton">
-      <img src="Media/Icons/Gem.png" alt="Gem Icon">
-      <span></span>
-    </button>
-    <button class="currencyButton" id="p2GemButton">
-      <img src="Media/Icons/Gem.png" alt="Gem Icon">
-      <span></span>
-    </button>
-    <button class="currencyButton" id="p1CatchCoinButton">
-      <img src="Media/Icons/Coin.png" alt="Coin Icon">
-      <span></span>
-    </button>
-    <button class="currencyButton" id="p2CatchCoinButton">
-      <img src="Media/Icons/Coin.png" alt="Coin Icon">
-      <span></span>
-    </button>
-  </div>
-
-  <!-- Version -->
-  <div class="home-screen" id="versionButton">
-    <button class="woodenButton" id="versionButton" data data-category="true">v 1.0</button>
-  </div>
-
-  <!-- Back Button for other canvases -->
-  <button class="woodenButton" id="backButton">&#x2190;</button>
-
-  <!-- Profile Canvas -->
-  <canvas class="window-canvas" id="profileCanvas"></canvas>
-
-  <div class="profile-wrapper">
-    <div class="profile" id="p1Profile">
-      <div class="profile-top-bar">
-        <div class="player-icon">
-          <img src="Media/Skins/Basket.png" alt="Skin">
-        </div>
-        <div class="side-section">
-          <div class="player-name">
-            <input id="player-1-name" type="text" maxlength="12" placeholder="Enter username...">
-            <button class="woodenButton" id="createBackup">Backup Data</button>
-          </div>
-          <div class="player-skin-title locked">For future update</div>
-        </div>
-      </div>
-      <div class="profile-stats">
-        <div class="profile-stat-div">
-          <span class="profile-stat-span">Score:</span>
-          <div class="profile-stat-box" id="player-1-score">0</div>
-        </div>
-        <div class="profile-stat-div">
-          <span class="profile-stat-span">Caught Balls:</span>
-          <div class="profile-stat-box" id="player-1-caught-balls">0</div>
-        </div>
-        <div class="profile-stat-div">
-          <span class="profile-stat-span">Lives Gained:</span>
-          <div class="profile-stat-box" id="player-1-lives-gained">0</div>
-        </div>
-        <div class="profile-stat-div">
-          <span class="profile-stat-span">Lives Lost:</span>
-          <div class="profile-stat-box" id="player-1-lives-lost">0</div>
-        </div>
-        <div class="profile-stat-div">
-          <span class="profile-stat-span">LG/LL:</span>
-          <div class="profile-stat-box" id="player-1-lgll">0</div>
-        </div>
-      </div>
-    </div>
-    <div class="profile" id="p2Profile">
-      <div class="profile-top-bar">
-        <div class="player-icon">
-          <img src="Media/Skins/Basket.png" alt="Skin">
-        </div>
-        <div class="side-section">
-          <div class="player-name">
-            <input id="player-2-name" type="text" maxlength="12" placeholder="Enter username...">
-            <button class="woodenButton" id="createBackup">Backup Data</button>
-          </div>
-          <div class="player-skin-title locked">For future update</div>
-        </div>
-      </div>
-      <div class="profile-stats">
-        <div class="profile-stat-div">
-          <span class="profile-stat-span">Score:</span>
-          <div class="profile-stat-box" id="player-2-score">0</div>
-        </div>
-        <div class="profile-stat-div">
-          <span class="profile-stat-span">Caught Balls:</span>
-          <div class="profile-stat-box" id="player-2-caught-balls">0</div>
-        </div>
-        <div class="profile-stat-div">
-          <span class="profile-stat-span">Lives Gained:</span>
-          <div class="profile-stat-box" id="player-2-lives-gained">0</div>
-        </div>
-        <div class="profile-stat-div">
-          <span class="profile-stat-span">Lives Lost:</span>
-          <div class="profile-stat-box" id="player-2-lives-lost">0</div>
-        </div>
-        <div class="profile-stat-div">
-          <span class="profile-stat-span">LG/LL:</span>
-          <div class="profile-stat-box" id="player-2-lgll">0</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  </div>
-  <!-- Settings Canvas-->
-  <canvas class="window-canvas" id="settingsCanvas"></canvas>
-
-  <div class="settings-wrapper">
-    <div class="upper-settings-bar">
-      <div class="first-setting-group">
-        <div class="button-group">
-          <div class="woodenButton" id="spawnLeavesText" data-category="true">Leaves:</div>
-          <button class="woodenButton" id="spawnLeavesButton"></button>
-        </div>
-        <div class="button-group">
-          <div class="woodenButton" id="leavesIntervalText" data-category="true">Leaf Rate:</div>
-          <button class="woodenButton" id="spawnIntervalButton">1000</button>
-        </div>
-        <div class="button-group">
-          <div class="woodenButton" id="musicVolumeText" data-category="true">Music:</div>
-          <button class="woodenButton" id="musicVolumeButton">0.5</button>
-        </div>
-        <div class="button-group">
-          <div class="woodenButton" id="sfxVolumeText" data-category="true">SFX:</div>
-          <button class="woodenButton" id="sfxVolumeButton">0.5</button>
-        </div>
-      </div>
-      <div class="second-setting-group">
-        <div class="button-group" id="left-group">
-          <button class="woodenButton" id="marker" data-category="true">Movement:</button>
-        </div>
-        <div class="button-group" id="right-group">
-          <button class="woodenButton" id="playerToggleButton">Player 1</button>
-        </div>
-      </div>
-    </div>
-    <div class="lower-settings-bar">
-      <div class="lower-group">
-        <div class="button-group">
-          <div class="woodenButton" id="difficultyText" data-category="true">Difficulty:</div>
-          <button class="woodenButton" id="difficultyButton">Potato</button>
-        </div>
-        <div class="button-group">
-          <div class="woodenButton" id="timeText" data-category="true">Timer:</div>
-          <button class="woodenButton" id="timeButton"></button>
-        </div>
-        <div class="button-group">
-          <div class="woodenButton" id="bgMusicText" data-category="true">Music:</div>
-          <button class="woodenButton" id="bgMusicButton"></button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Levels Canvas -->
-  <canvas class="window-canvas" id="levelsCanvas"></canvas>
-
-  <div class="levels-container">
-    <div class="level" id="space-race-level">
-      <div class="level-name-bar">
-        <span class="level-name-text">Space Race</span>
-      </div>
-      <div class="image-bar" id="space-image-bar"></div>
-      <div class="level-nav-bar">
-        <div class="level-nav-container">
-          <div class="level-spacer-button"></div>
-          <a class="level-select-button" href="js/game/game-levels/space-race.html">
-            <span>Play</span>
-          </a>
-          <button class="current-setup-button">i</button>
-        </div>
-      </div>
+    <div class="leaf-container">
+        <img class="leaf" src="Media/Background/leaves.png" alt="Right Leaf">
+        <img class="leaf" src="Media/Background/leaves.png" alt="Left Leaf">
     </div>
 
-    <div class="level" id="forest-level">
-      <div class="level-name-bar">
-        <span class="level-name-text">Forest</span>
-      </div>
-      <div class="image-bar" id="forest-image-bar"></div>
-      <div class="level-nav-bar">
-        <div class="level-nav-container">
-          <div class="level-spacer-button"></div>
-          <a class="level-select-button" href="js/game/game-levels/forest.html">
-            <span>Play</span>
-          </a>
-          <button class="current-setup-button">i</button>
+    <div class="overlay"></div>
+
+    <div class="container">
+        <h1 class="game-title">Catch It!</h1>
+
+        <div class="main-container">
+            <img src="Media/Background/CatchItBig.png" alt="Game Logo" />
         </div>
-      </div>
+
+        <button class="play-button">Play</button>
     </div>
 
-    <div class="level" id="halloween-level">
-      <div class="level-name-bar">
-        <span class="level-name-text">Halloween</span>
-      </div>
-      <div class="image-bar" id="halloween-image-bar"></div>
-      <div class="level-nav-bar">
-        <div class="level-nav-container">
-          <div class="level-spacer-button"></div>
-          <a class="level-select-button" href="js/game/game-levels/halloween.html">
-            <span>Play</span>
-          </a>
-          <button class="current-setup-button">i</button>
+    <div class="loading-container">
+        <img src="Media/Background/text.png" alt="Game Text">
+        <div class="loader-wrapper">
+            <div class="loader-text">40%</div>
+            <div class="loader">
+                <div class="loader-fill" style="width: 0%;"></div>
+            </div>
+            <div class="loader-tip">Tip: Boxes may contain skins or powerups!</div>
         </div>
-      </div>
     </div>
+    <script type="module" src="js/data/assets.js"></script>
+    <script type="module">
+        // document.addEventListener("contextmenu", (e) => {
+        //     e.preventDefault();
+        // });
+        import * as loader from "/js/loader.js"
+        import { gameAssets } from "/js/data/assets.js"
 
-    <div class="level" id="christmas-level">
-      <div class="level-name-bar">
-        <span class="level-name-text">Christmas</span>
-      </div>
-      <div class="image-bar" id="christmas-image-bar"></div>
-      <div class="level-nav-bar">
-        <div class="level-nav-container">
-          <div class="level-spacer-button"></div>
-          <button class="level-select-button">Play</button>
-          <button class="current-setup-button">i</button>
-        </div>
-      </div>
-    </div>
+        loader.initLoaderDOM();
 
-    <div class="level" id="the-first-night-level">
-      <div class="level-name-bar">
-        <div class="level-name-text">The First Night</div>
-      </div>
-      <div class="image-bar" id="the-first-night-image-bar"></div>
-      <div class="level-nav-bar">
-        <div class="level-nav-container">
-          <div class="level-spacer-button"></div>
-          <button class="level-select-button">Play</button>
-          <button class="current-setup-button">i</button>
-        </div>
-      </div>
-    </div>
+        function startAnimation() {
+            const container = document.createElement('div');
+            container.className = "animation-container";
+            document.body.appendChild(container);
 
-    <div class="level" id="the-deep-dark-level">
-      <div class="level-name-bar">
-        <div class="level-name-text">The Deep Dark - Boss Fight</div>
-      </div>
-      <div class="image-bar" id="the-deep-dark-image-bar"></div>
-      <div class="level-nav-bar">
-        <div class="level-nav-container">
-          <div class="level-spacer-button"></div>
-          <button class="level-select-button">Play</button>
-          <button class="current-setup-button">i</button>
-        </div>
-      </div>
-    </div>
-  </div>
+            container.style.animation = "fadeOut 3s cubic-bezier(1,0,0,1)";
+            const loaderScreen = document.querySelector(".loading-container");
 
-  <!-- Skins Canvas-->
-  <canvas class="window-canvas wooden" id="skinsCanvas"></canvas>
+            container.addEventListener("animationend", () => {
+                console.log("I finished my animation!");
+                loaderScreen.style.display = "flex";
+                loader.initLoaderDOM();
+                setTimeout(() => {
+                    const allPaths = loader.extractTypedAssets(gameAssets);
+                    loader.preloadManualAssets(allPaths);
+                }, 2000)
+            })
+        }
 
-  <div class="playerSelection">
-    <button class="woodenButton" id="player-1-selector">
-      <img src="Media/Skins/Basket.png">
-      <span></span>
-    </button>
-    <button class="woodenButton" id="player-2-selector">
-      <img src="Media/Skins/Basket.png">
-      <span></span>
-    </button>
-  </div>
+        const playButton = document.querySelector(".play-button");
 
-  <div id="skinShowDiv1" class="skinShowDiv" style="display: none;"></div>
-  <div id="skinShowDiv2" class="skinShowDiv" style="display: none"></div>
+        function openFullScreenAndLock() {
+            const el = document.documentElement;
+
+            const request = el.requestFullscreen?.() ||
+                el.webkitRequestFullscreen?.() ||
+                el.msRequestFullscreen?.();
+
+            if (request instanceof Promise) {
+                request.then(() => {
+                    if (screen.orientation && screen.orientation.lock) {
+                        screen.orientation.lock("landscape").catch((err) => {
+                            console.warn("Orientation lock failed:", err.message);
+                        });
+                    }
+                }).catch(err => {
+                    console.warn("Fullscreen request failed:", err.message);
+                });
+            }
+        }
+
+        playButton.addEventListener("click", () => {
+            startAnimation();
+            openFullScreenAndLock();
+        });
+
+    </script>
+    <script type="module" src="js/data/players.js"></script>
+    <script type="module" src="js/data/skins.js"></script>
+    <script type="module">
+        // import * as utils from "./js/data/helper-functions.js"
+        // import { allPlayerData } from "./js/data/players.js"
+        // import { allSkins, rarityInfo, levelData } from "./js/data/skins.js"
+
+        // window.addEventListener("load", async () => {
+        //     const assets = [];
+
+        //     for (const key in allPlayerData) {
+        //         assets.push({src: allPlayerData[key], type: 'image'})
+        //     }
+        // })
 
 
-  <div class="window-canvas" id="skinDetailsDiv">
-    <div id="skin-bar">
-      <div id="skin-info">
-        <p class="stat-text">Hello World!</p>
-      </div>
-      <div id="skin-image">
-        <div id="skin-name">
-          <span class="stat-text"></span>
-        </div>
-        <img id="skin-img" src="Media/Skins/ShoppingCart.png">
-        <div class="spacer"></div> <!-- Empty spacer div -->
-      </div>
-      <div id="skin-stats">
-        <div class="spacer"></div> <!-- Empty spacer div -->
-        <div id="stats-grid">
-          <!-- Top Left: Image Placeholder -->
-          <div class="open-star-pwr-window stat-item img">
-            <img src="Media/Star Powers/GoBigOrGoHome.png" class="stat-icon locked">
-            <span class="stat-text icon-text">Gotta Go!</span>
-          </div>
-
-          <!-- Top Right: Image Placeholder -->
-          <div class="open-star-pwr-window stat-item img">
-            <img src="Media/Star Powers/BasketBattalion.png" class="stat-icon locked">
-            <span class="stat-text icon-text">Heart of Iron</span>
-          </div>
-
-          <!-- Bottom Left: Health Icon + Text -->
-          <div class="stat-item">
-            <img src="Media/Icons/Health.png" class="stat-icon">
-            <span class="stat-text icon-text" id="skin-health"></span>
-          </div>
-
-          <!-- Bottom Right: Speed Icon + Text -->
-          <div class="stat-item">
-            <img src="Media/Icons/Speed.png" class="stat-icon">
-            <span class="stat-text icon-text" id="skin-speed"></span>
-          </div>
-        </div>
-        <div id="powerpoints-bar">
-          <span class="skin-text" id="powerpoints-text"></span>
-          <div id="powerpoints-fill"></div>
-        </div>
-      </div>
-    </div>
-    <div class="lower-bar">
-      <div class="arrows">
-        <img class="arrow-icon left-arrow hoverable" src="Media/Icons/LeftArrow.png" alt="Left Arrow">
-        <img class="arrow-icon right-arrow hoverable" src="Media/Icons/RightArrow.png" alt="Right Arrow">
-      </div>
-      <button class="window-button" id="select-button">
-        <span class="skin-text">Select</span>
-      </button>
-      <button class="window-button" id="upgrade-button">
-        <span class="skin-text" id="upgrade-cost-text"></span>
-      </button>
-    </div>
-  </div>
-
-  <div class="empty-canvas" id="forStarPowers">
-    <div class="window-canvas" id="star-power-window">
-      <div class="current-skin" id="current-skin">
-        <img class="current-skin-img" id="current-skin-img" src="Media/Skins/Basket.png" alt="Current Skin">
-      </div>
-      <div class="star-powers">
-        <div class="star-power-top-bar">
-          <div class="star-power-list">
-            <img src="Media/Star Powers/GoBigOrGoHome.png">
-            <img src="Media/Star Powers/BasketBattalion.png">
-          </div>
-        </div>
-        <div class="star-powers-desc">
-          <div class="star-pwr-desc-img">
-            <img class="star-pwr-img" src="Media/Star Powers/GoBigOrGoHome.png" alt="Current Star Power">
-          </div>
-          <span class="stat-text icon-text star-pwr-desc-name"></span>
-          <span class="stat-text icon-text star-pwr-desc-desc"></span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Scripts -->
-  <script type="module" src="js/data/players.js"></script>
-  <script type="module" src="js/data/skins.js"></script>'
-  <script type="module" src="js/data/game-levels.js"></script>
-  <script type="module" src="js/data/assets.js"></script>
-  <script type="module" src="js/data/helper-functions.js"></script>
-  <script type="module" src="js/data/game-objects.js"></script>
-  <script type="module" src="js/data/star-powers.js"></script>
-  <script type="module" src="js/game/functions/effects.js"></script>
-  <script type="module" src="js/game/functions/game-functions.js"></script>
-  <script type="module" src="js/profile.js"></script>
-  <script type="module" src="js/settings.js"></script>
-  <script type="module" src="js/CatchIt.js"></script>
-  <script type="module" src="js/player-data.js"></script>
-  <script type="module" src="js/buttons.js"></script>
-  <script type="module" src="js/show-skins.js"></script>
-  <script type="module" src="js/skins.js"></script>
-  <script type="module" src="js/upgrading.js"></script>
-  <script type="module" src="js/backup.js"></script>
-  <script src="js/animations.js"></script>
+    </script>
 </body>
 
 </html>

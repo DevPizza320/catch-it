@@ -372,7 +372,7 @@ export function handleGameOver(players, state) {
         if (player.lives <= 0) {
             loserIndex = index;
             state.current = "gameover";
-            generateGameOverScreen(players, loserIndex, 'index.html');
+            generateGameOverScreen(players, loserIndex, 'catch-it.html');
             return;
         }
     });
