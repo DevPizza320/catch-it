@@ -435,7 +435,7 @@ export function createMobileControls(player, index, type = "left", flipped = fal
         const leftArrow = document.createElement('img');
         leftArrow.id = `moverLeft${index}`;
         leftArrow.dataset.name = 'LeftArrow';
-        leftArrow.src = "/Media/Icons/LeftArrow.png";
+        leftArrow.src = "../../../Media/Icons/LeftArrow.png";
 
         const rightArrow = document.createElement('img');
         rightArrow.id = `moverRight${index}`;
