@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Catch It!</title>
     <link rel="shortcut icon" href="Media/Background/CatchIt.png" type="image/png" />
     <style>
@@ -381,14 +381,44 @@
             <div class="loader-tip">Tip: Boxes may contain skins or powerups!</div>
         </div>
     </div>
+    <script>
+        // ==== UNIVERSAL ANTI-ZOOM SCRIPT ====
+
+        // Prevent zoom via Ctrl + mouse wheel (desktop)
+        window.addEventListener('wheel', function (e) {
+            if (e.ctrlKey) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        // Prevent zoom via Ctrl + +/- keys (desktop)
+        window.addEventListener('keydown', function (e) {
+            if (e.ctrlKey && (e.key === '+' || e.key === '-' || e.key === '=')) {
+                e.preventDefault();
+            }
+        });
+
+        // Prevent pinch zoom and double-tap zoom (mobile)
+        document.addEventListener('gesturestart', function (e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('dblclick', function (e) {
+            e.preventDefault();
+        });
+
+        // Prevent zoom on touchmove when scaling
+        document.addEventListener('touchmove', function (e) {
+            if (e.scale !== 1) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+    </script>
     <script type="module" src="./js/data/assets.js"></script>
     <script type="module">
         import * as loader from "./js/loader.js"
         import { gameAssets } from "./js/data/assets.js"
-        
-        document.addEventListener("contextmenu", (e) => {
-            e.preventDefault();
-        });
 
         loader.initLoaderDOM();
 
