@@ -433,6 +433,59 @@
   </div>
 
   <!-- Scripts -->
+  <script>
+    // ==== UNIVERSAL ANTI-ZOOM ====
+
+    // Prevent zoom via Ctrl + mouse wheel (desktop)
+    window.addEventListener('wheel', function (e) {
+      if (e.ctrlKey) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    // Prevent zoom via Ctrl + +/- keys (desktop)
+    window.addEventListener('keydown', function (e) {
+      if (e.ctrlKey && (e.key === '+' || e.key === '-' || e.key === '=')) {
+        e.preventDefault();
+      }
+    });
+
+    // Prevent pinch zoom and double-tap zoom (mobile)
+    document.addEventListener('gesturestart', function (e) {
+      e.preventDefault();
+    });
+
+    document.addEventListener('dblclick', function (e) {
+      e.preventDefault();
+    });
+
+    // Prevent zoom on touchmove when scaling
+    document.addEventListener('touchmove', function (e) {
+      if (e.scale !== 1) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    // ==== UNIVERSAL SCREEN LOCKING ====
+
+    const el = document.documentElement;
+
+    const request = el.requestFullscreen?.() ||
+      el.webkitRequestFullscreen?.() ||
+      el.msRequestFullscreen?.();
+
+    if (request instanceof Promise) {
+      request.then(() => {
+        if (screen.orientation && screen.orientation.lock) {
+          screen.orientation.lock("landscape").catch((err) => {
+            console.warn("Orientation lock failed:", err.message);
+          });
+        }
+      }).catch(err => {
+        console.warn("Fullscreen request failed:", err.message);
+      });
+    }
+  </script>
   <script type="module" src="./js/data/players.js"></script>
   <script type="module" src="./js/data/skins.js"></script>'
   <script type="module" src="./js/data/game-levels.js"></script>

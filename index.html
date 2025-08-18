@@ -415,6 +415,24 @@
         }, { passive: false });
 
         // ==== UNIVERSAL SCREEN LOCKING ====
+
+        const el = document.documentElement;
+
+        const request = el.requestFullscreen?.() ||
+            el.webkitRequestFullscreen?.() ||
+            el.msRequestFullscreen?.();
+
+        if (request instanceof Promise) {
+            request.then(() => {
+                if (screen.orientation && screen.orientation.lock) {
+                    screen.orientation.lock("landscape").catch((err) => {
+                        console.warn("Orientation lock failed:", err.message);
+                    });
+                }
+            }).catch(err => {
+                console.warn("Fullscreen request failed:", err.message);
+            });
+        }
     </script>
     <script type="module" src="./js/data/assets.js"></script>
     <script type="module">
