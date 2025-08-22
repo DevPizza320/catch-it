@@ -182,7 +182,7 @@
             // coalAudio: Object.assign(new Audio(EXTENSION + gameAssets.audios.backgroundMusic.levels.christmas.objects.coal), { volume: allPlayerData.generalStats.sfxVolume || 1 }),
             caneAudio: Object.assign(new Audio(EXTENSION + gameAssets.audios.backgroundMusic.levels.Christmas.objects.cane), { volume: allPlayerData.generalStats.sfxVolume || 1 }),
             // grinchAudio: Object.assign(new Audio(EXTENSION + gameAssets.audios.backgroundMusic.levels.Christmas.objects.steal), { volume: allPlayerData.generalStats.sfxVolume || 1 }),
-            sacAudio: Object.assign(new Audio(EXTENSION + gameAssets.audios.backgroundMusic.levels.Christmas.objects.sac), { volume: allPlayerData.generalStats.sfxVolume || 1 }),
+            // sacAudio: Object.assign(new Audio(EXTENSION + gameAssets.audios.backgroundMusic.levels.Christmas.objects.sac), { volume: allPlayerData.generalStats.sfxVolume || 1 }),
             stealAudio: Object.assign(new Audio(EXTENSION + gameAssets.audios.backgroundMusic.levels.Christmas.steal), { volume: allPlayerData.generalStats.sfxVolume || 1 }),
             damageAudio: Object.assign(new Audio(EXTENSION + gameAssets.audios.backgroundMusic.levels.Christmas.damage), { volume: allPlayerData.generalStats.sfxVolume || 1 }),
             pointsAudio: Object.assign(new Audio(EXTENSION + gameAssets.audios.backgroundMusic.levels.Christmas.points), { volume: allPlayerData.generalStats.sfxVolume || 1 }),
@@ -313,7 +313,7 @@
                     (i, obj) => [
                         { fn: (player) => { player.score -= 5000; player.lives -= Math.floor(3 * DIFFICULTY_MULTIPLIER); player.livesLost += Math.floor(3 * DIFFICULTY_MULTIPLIER) }, args: [assets.players[i]] },
                         { fn: (p, t, x, y, c, s) => { g.createPopup(p, t, x, y, c, s) }, args: [assets.popups, `${Math.floor(-3 * DIFFICULTY_MULTIPLIER)}L`, obj.x, obj.y, "#d93030", "#590505"] },
-                        { fn: g.playAudio, args: [assets.grinchAudio] }
+                        { fn: g.playAudio, args: [assets.stealAudio] }
                     ]
                 );
 
@@ -337,11 +337,11 @@
                                     g.playAudio(assets.pointsAudio);
                                 } else if (chance < 0.8) {
                                     eff.slowness(0.25, 2500 * DIFFICULTY_MULTIPLIER, false, 1, player);
-                                    g.playAudio(assets.cobwebAudio);
+                                    g.playAudio(assets.slowAudio);
                                 } else if (chance < 0.9) {
                                     player.score += otherPlayer.score * 0.05;
                                     otherPlayer.score -= otherPlayer.score * 0.05;
-                                    g.playAudio(assets.glassAudio);
+                                    g.playAudio(assets.stealAudio);
                                 }
                             }, args: [assets.players[i], assets.players[(i + 1) % assets.players.length]]
                         },
