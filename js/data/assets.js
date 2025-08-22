@@ -92,8 +92,8 @@ const gameAssets = {
             Christmas: {
                 b: "Media/Background/GameLevels/Christmas.png",
                 objects: {
-                    candyCane: "Media/Objects/CandyCane.png",
                     coal: "Media/Objects/Coal.png",
+                    cane: "Media/Objects/CandyCane.png",
                     grinch: "Media/Objects/Grinch.png",
                     sac: "Media/Objects/Sac.png"
                 }
@@ -129,7 +129,7 @@ const gameAssets = {
                 load: "Media/Background/SFX/load.mp3",
                 buttonSound: "Media/Background/SFX/ButtonClick.mp3",
                 starPowerSelected: "Media/Background/SFX/StarPowerSelected.mp3",
-                gameOver: "Media/Background/SFX/GameOverSound.mp3"
+                gameOver: "Media/Background/SFX/event/GameOverSound.mp3"
             }
         },
         backgroundMusic: {
@@ -162,15 +162,27 @@ const gameAssets = {
                     b: "Media/Background/Audios/Halloween.mp3",
                     objects: {
                         bat: "Media/Background/SFX/Bat.mp3",
-                        cobweb: "Media/Background/SFX/Cobweb.mp3",
+                        cobweb: "Media/Background/SFX/event/Slow.mp3",
                         pumpkin: "Media/Background/SFX/Pumpkin.mp3",
-                        glass: "Media/Background/SFX/Glass.mp3",
-                        damage: "Media/Background/SFX/Damage.mp3",
-                        points: "Media/Background/SFX/Points.mp3",
-                        speed: "Media/Background/SFX/Speed.mp3"
+                        glass: "Media/Background/SFX/event/Steal.mp3",
+                        damage: "Media/Background/SFX/event/Damage.mp3",
+                        points: "Media/Background/SFX/event/Points.mp3",
+                        speed: "Media/Background/SFX/event/Speed.mp3"
                     }
                 },
-                Christmas: "Media/Background/Audios/Christmas.mp3",
+                Christmas: {
+                    b: "Media/Background/Audios/Christmas.mp3",
+                    objects: {
+                        // coal: "Media/Background/SFX/Coal.mp3",
+                        cane: "Media/Background/SFX/CandyCane.mp3",
+                        grinch: "Media/Background/SFX/Grinch.mp3",
+                        sac: "Media/Background/SFX/Sac.mp3",
+                        steal: "Media/Background/SFX/event/Steal.mp3",
+                        damage: "Media/Background/SFX/event/Damage.mp3",
+                        points: "Media/Background/SFX/event/Points.mp3",
+                        speed: "Media/Background/SFX/event/Speed.mp3"
+                    }
+                },
                 TheFirstNight: "Media/Background/Audios/TheFirstNight.mp3",
                 TheDeepDark: "Media/Background/Audios/TheDeepDark.mp3"
             }

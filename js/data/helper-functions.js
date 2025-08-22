@@ -548,5 +548,4 @@ if (!loadFromLocalStorage("allPlayerData")) {
     console.log("bruh");
 }
 
-logLocalStorageContents();
 // modifySettings(getUserDeviceType());
